@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA | Intelligent Negotiation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fredoka+One&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-void: #030305;
+            --glass-surface: rgba(20, 20, 23, 0.7);
+            --glass-highlight: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --gold-gradient: linear-gradient(135deg, #D4AF37 0%, #F5D061 50%, #D4AF37 100%);
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --platinum-gradient: linear-gradient(135deg, #e2e2e2 0%, #9ca3af 100%);
+        }
+
+        body {
+            background-color: var(--bg-void);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-void);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease-out, visibility 0.3s;
+        }
+
+        .splash-brand {
+            font-size: 6rem;
+            font-weight: 800;
+            letter-spacing: -3px;
+            background: linear-gradient(135deg, #fff 0%, #777 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: slideUpReveal 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .splash-progress-container {
+            width: 200px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+
+        .splash-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: var(--gold-gradient);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            animation: progressFill 0.6s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+        }
+
+        .splash-text {
+            margin-top: 15px;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 0.4s ease-out 0.1s forwards;
+        }
+
+        @keyframes slideUpReveal {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes progressFill {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .main-container {
+            max-width: 950px;
+            margin: 5vh auto;
+            background: var(--glass-surface);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            padding: 4rem;
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4.5rem;
+        }
+
+        .brand-logo {
+            font-size: 4.5rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            background: linear-gradient(to bottom, #ffffff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .brand-subtitle::before,
+        .brand-subtitle::after {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        .form-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #D4AF37;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            display: block;
+            opacity: 0.9;
+        }
+
+        .input-wrapper {
+            position: relative;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            padding: 0.2rem;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .input-wrapper:focus-within {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.08);
+        }
+
+        .input-icon {
+            padding: 0 1.2rem;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .input-wrapper:focus-within .input-icon {
+            color: #D4AF37;
+        }
+
+        .form-control {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 1rem 0;
+            font-size: 1.05rem;
+            font-weight: 400;
+            box-shadow: none !important;
+        }
+
+        .form-control:focus {
+            background: transparent !important;
+            color: white !important;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: 300;
+        }
+
+        .source-selector {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .source-option {
+            flex: 1;
+        }
+
+        .source-check {
+            display: none;
+        }
+
+        /* Skeleton Loading Styles */
+        .skeleton-container {
+            display: none;
+        }
+
+        .product-card {
+            background: var(--glass-surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            opacity: 0;
+            /* Hidden initially for animation */
+            animation: slideIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .skeleton-card {
+            background: var(--glass-surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skeleton-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: skeleton-loading 1.5s infinite;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        .skeleton-title {
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-bottom: 12px;
+            width: 80%;
+        }
+
+        .skeleton-price {
+            height: 24px;
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 4px;
+            width: 40%;
+            margin-bottom: 12px;
+        }
+
+        .skeleton-rating {
+            height: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            width: 60%;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 6px;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            width: fit-content;
+            margin-bottom: 12px;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.6);
+            animation: typing-bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing-bounce {
+
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .source-label {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .source-check:checked+.source-label {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(0, 0, 0, 0) 100%);
+            border-color: #D4AF37;
+            color: #D4AF37;
+            box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.08);
+        }
+
+        .btn-premium {
+            width: 100%;
+            padding: 1.4rem;
+            border-radius: 20px;
+            background: var(--gold-gradient);
+            border: none;
+            color: #000;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.1s;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.35);
+        }
+
+        /* Scanner */
+        .scanner-stage {
+            display: none;
+            text-align: center;
+            padding: 1rem 0;
+            height: 450px;
+            overflow: hidden;
+        }
+
+        .store-svg-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .stroke {
+            stroke: #D4AF37;
+            stroke-width: 4;
+            stroke-linejoin: round;
+            stroke-miterlimit: 10;
+            fill: none;
+        }
+
+        /* Animations borrowed from user snippet */
+        #browser {
+            transform: translateY(-100%);
+            animation: moveDown 0.4s cubic-bezier(0.77, -0.5, 0.3, 1.5) forwards;
+        }
+
+        @keyframes moveDown {
+            from {
+                transform: translate(0, -100%);
+            }
+
+            to {
+                transform: translate(0, 0);
+            }
+        }
+
+        .scanner-text-box {
+            margin-top: 1rem;
+            height: 40px;
+        }
+
+        .scanner-status {
+            color: #D4AF37;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .scanner-subtext {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+
+        /* Results */
+        .results-section {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeUp 0.4s forwards;
+        }
+
+        .section-title i {
+            color: #D4AF37;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2rem;
+            height: 100%;
+            transition: all 0.2s ease;
+            position: relative;
+            opacity: 0;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+        }
+
+        .premium-match {
+            border-color: rgba(212, 175, 55, 0.3);
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .premium-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #D4AF37;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 4px 12px;
+            border-radius: 50px;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 1rem 0;
+            line-height: 1.4;
+            height: 3.2em;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--platinum-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 1rem 0;
+        }
+
+        .sold-out {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ef4444;
+            margin: 1rem 0;
+            text-transform: uppercase;
+        }
+
+        /* Chat */
+        .chat-container-wrapper {
+            display: none;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            opacity: 0;
+            animation: fadeUp 0.5s forwards;
+        }
+
+        .chat-box {
+            background: #08080a;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            height: 500px;
+            padding: 2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 1.2rem 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            opacity: 0;
+            animation: slideInMsg 0.2s forwards;
+        }
+
+        @keyframes slideInMsg {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .msg-ai {
+            align-self: flex-start;
+            border-left: 2px solid #D4AF37;
+            background: rgba(212, 175, 55, 0.04);
+            border-radius: 0 16px 16px 16px;
+            color: #d1d5db;
+        }
+
+        .msg-user {
+            align-self: flex-end;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px 0 16px 16px;
+            color: #ffffff;
+            border: 1px solid var(--glass-border);
+        }
+
+        .msg-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: block;
+            opacity: 0.7;
+        }
+
+        .deal-card {
+            background: radial-gradient(circle at center, #151515 0%, #000 100%);
+            border: 1px solid #333;
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 3rem;
+            position: relative;
+            animation: dealReveal 0.5s forwards;
+        }
+
+        @keyframes dealReveal {
+            from {
+                transform: scale(0.95) translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .deal-price {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #D4AF37;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            margin: 1.5rem 0;
+            letter-spacing: -1px;
+        }
+
+        .btn-buy {
+            background: transparent;
+            border: 1px solid #D4AF37;
+            color: #D4AF37;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            margin-top: 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-buy:hover {
+            background: #D4AF37;
+            color: #000;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="noise-overlay"></div>
+    <div id="splash-screen">
+        <div class="splash-logo-container">
+            <div class="splash-brand">AURA</div>
+        </div>
+        <div class="splash-progress-container">
+            <div class="splash-progress-bar"></div>
+        </div>
+        <div class="splash-text">Initializing Core Systems...</div>
+    </div>
+
+    <div class="container-fluid p-0">
+        <div class="main-container">
+            <div class="header" id="main-header">
+                <div class="brand-logo">AURA</div>
+                <div class="brand-subtitle">Autonomous Negotiation Engine</div>
+            </div>
+
+            <div id="input-section">
+                <form id="negotiation-form">
+                    <div class="row g-4">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Target Acquisition</label>
+                                <div class="input-wrapper">
+                                    <div class="input-icon"><i class="fas fa-cube"></i></div>
+                                    <input type="text" class="form-control" id="query"
+                                        placeholder="Describe the product..." autocomplete="off" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Specifications</label>
+                                <div class="input-wrapper">
+                                    <div class="input-icon"><i class="fas fa-sliders-h"></i></div>
+                                    <input type="text" class="form-control" id="specs" placeholder="Required features"
+                                        autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Capital Allocation (₹)</label>
+                                <div class="input-wrapper">
+                                    <div class="input-icon"><i class="fas fa-rupee-sign"></i></div>
+                                    <input type="number" class="form-control" id="budget" placeholder="Max limit"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Marketplaces</label>
+                            <div class="source-selector">
+                                <div class="source-option">
+                                    <input type="checkbox" class="source-check" id="source-amazon" value="amazon"
+                                        checked>
+                                    <label class="source-label" for="source-amazon">
+                                        <i class="fab fa-amazon"></i> Amazon
+                                    </label>
+                                </div>
+                                <div class="source-option">
+                                    <input type="checkbox" class="source-check" id="source-flipkart" value="flipkart"
+                                        checked>
+                                    <label class="source-label" for="source-flipkart">
+                                        <i class="fas fa-shopping-bag"></i> Flipkart
+                                    </label>
+                                </div>
+                                <div class="source-option">
+                                    <input type="checkbox" class="source-check" id="source-web" value="web">
+                                    <label class="source-label" for="source-web">
+                                        <i class="fas fa-globe"></i> Global Web
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-premium" id="submit-btn"><span>Initialize Negotiation
+                            Sequence</span></button>
+                </form>
+            </div>
+
+            <style>
+                .radar-scanner-box {
+                    width: 300px;
+                    height: 200px;
+                    margin: 2rem auto;
+                    border: 2px solid #333;
+                    border-radius: 10px;
+                    position: relative;
+                    background:
+                        linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)),
+                        linear-gradient(90deg, rgba(255, 215, 0, 0.1) 1px, transparent 1px),
+                        linear-gradient(rgba(255, 215, 0, 0.1) 1px, transparent 1px);
+                    background-size: 100% 100%, 20px 20px, 20px 20px;
+                    box-shadow: 0 0 20px rgba(255, 215, 0, 0.05);
+                    overflow: hidden;
+                }
+
+                .scan-line {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 4px;
+                    background: #ffd700;
+                    box-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700;
+                    animation: scan 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+                    opacity: 0.8;
+                }
+
+                .radar-content {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: #ffd700;
+                    font-family: 'Courier New', monospace;
+                    font-size: 1.2rem;
+                    letter-spacing: 2px;
+                    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+                    white-space: nowrap;
+                }
+
+                @keyframes scan {
+                    0% {
+                        top: 0%;
+                        opacity: 0;
+                    }
+
+                    10% {
+                        opacity: 1;
+                    }
+
+                    90% {
+                        opacity: 1;
+                    }
+
+                    100% {
+                        top: 100%;
+                        opacity: 0;
+                    }
+                }
+
+                .scanner-status {
+                    font-family: 'JetBrains Mono', monospace;
+                    color: #ffd700;
+                    margin-top: 1rem;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+            </style>
+
+            <div class="scanner-stage" id="scanner-view">
+                <div class="radar-scanner-box">
+                    <div class="scan-line"></div>
+                    <div class="radar-content" id="radar-text">INITIALIZING...</div>
+                    <!-- Corner Accents -->
+                    <div
+                        style="position: absolute; top: 0; left: 0; width: 10px; height: 10px; border-top: 2px solid #ffd700; border-left: 2px solid #ffd700;">
+                    </div>
+                    <div
+                        style="position: absolute; top: 0; right: 0; width: 10px; height: 10px; border-top: 2px solid #ffd700; border-right: 2px solid #ffd700;">
+                    </div>
+                    <div
+                        style="position: absolute; bottom: 0; left: 0; width: 10px; height: 10px; border-bottom: 2px solid #ffd700; border-left: 2px solid #ffd700;">
+                    </div>
+                    <div
+                        style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-bottom: 2px solid #ffd700; border-right: 2px solid #ffd700;">
+                    </div>
+                </div>
+
+                <div class="scanner-text-box">
+                    <div class="scanner-status" id="scanner-status">Analyzing Vendor Reliability...</div>
+                    <div class="scanner-subtext" id="scanner-subtext">Establishing secure handshake with vendor APIs
+                    </div>
+                </div>
+            </div>
+
+            <div id="results-view" class="results-section">
+                <div class="section-title" id="products-title"><i class="fas fa-crosshairs"></i> Identified Targets
+                </div>
+                <div id="products-container" class="row g-4 mb-5"></div>
+
+                <!-- Skeleton Loading -->
+                <div id="skeleton-loader" class="skeleton-container row g-4 mb-5">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="skeleton-card">
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-price"></div>
+                            <div class="skeleton-rating"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="skeleton-card">
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-price"></div>
+                            <div class="skeleton-rating"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="skeleton-card">
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-price"></div>
+                            <div class="skeleton-rating"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="skeleton-card">
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-price"></div>
+                            <div class="skeleton-rating"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="skeleton-card">
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-price"></div>
+                            <div class="skeleton-rating"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-container-wrapper" id="chat-wrapper">
+                    <div class="section-title"><i class="fas fa-stream"></i> Negotiation Transcript</div>
+                    <div class="chat-box" id="chat-container"></div>
+                </div>
+
+                <div id="final-agreement" style="display:none;"></div>
+
+                <!-- DIFFERENT SECTION FOR AI JUDGE -->
+                <div id="judge-view" style="display:none; margin-top: 30px;">
+                    <div class="judge-card">
+                        <div class="judge-header">
+                            <i class="fas fa-brain"></i> AURA ANALYST REPORT
+                        </div>
+                        <div id="judge-content" class="p-3"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .judge-card {
+            background: rgba(10, 10, 15, 0.95);
+            border: 1px solid #ffd700;
+            /* Gold for premium/judge */
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+            max-width: 600px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .judge-header {
+            background: linear-gradient(90deg, #b8860b, #ffd700);
+            color: #000;
+            font-weight: bold;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+
+    <style>
+        /* ADVANCED UX: GLASSMORPHISM & ANIMATIONS */
+        .glass-modal {
+            background: rgba(20, 20, 25, 0.85) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border: 1px solid rgba(255, 215, 0, 0.3) !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6) !important;
+        }
+
+        .typing-effect {
+            border-right: 2px solid #ffd700;
+            white-space: pre-wrap;
+            display: inline-block;
+        }
+
+        @keyframes blink-cursor {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: #ffd700
+            }
+        }
+
+        /* CARD HOVER PHYSICS */
+        .product-card {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.2);
+            z-index: 100;
+        }
+
+        /* PROGRESS BAR ANIMATION */
+        .progress-bar {
+            transition: width 1.5s ease-in-out;
+        }
+    </style>
+
+    <!-- Analysis Modal (Glassmorphism) -->
+    <div class="modal fade" id="analysisModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-modal" style="color: #fff;">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <h5 class="modal-title"><i class="fas fa-brain text-warning"></i> Neural Analysis Data</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="analysis-modal-body">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.addEventListener('load', () => { setTimeout(() => { const splash = document.getElementById('splash-screen'); splash.style.opacity = '0'; setTimeout(() => splash.style.visibility = 'hidden', 600); }, 2000); });
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        document.getElementById('negotiation-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            document.getElementById('input-section').style.display = 'none';
+            document.getElementById('main-header').style.marginBottom = '2rem';
+            const scanner = document.getElementById('scanner-view');
+            scanner.style.display = 'block';
+
+            try {
+                let selectedSources = [];
+                document.querySelectorAll('.source-check:checked').forEach(cb => {
+                    selectedSources.push(cb.value);
+                });
+                if (selectedSources.length === 0) {
+                    selectedSources = []; // Backend interprets [] as "all sources"
+                }
+
+                const formData = {
+                    query: document.getElementById('query').value.trim(),
+                    budget: parseFloat(document.getElementById('budget').value),
+                    specs: document.getElementById('specs').value.trim(),
+                    sources: selectedSources
+                };
+
+                // Start split flow: 1. SEARCH PRODUCTS
+                const fetchProducts = fetch('/search', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
+
+                // RADAR ANIMATION LOOP
+                const radarText = document.getElementById('radar-text');
+                const radarInterval = setInterval(() => {
+                    const texts = ["SEARCHING...", "TRIANGULATING...", "DECRYPTING_PACKETS...", "PINGING_HOSTS...", "FILTERING_NOISE..."];
+                    radarText.innerText = texts[Math.floor(Math.random() * texts.length)];
+                }, 300);
+
+                // Scanner status updates
+                const status = document.getElementById('scanner-status');
+                await sleep(500); status.innerText = "Scanning Global Marketplaces...";
+                await sleep(1000); status.innerText = "Analyzing Vendor Reliability...";
+
+                // Get Products
+                const prodResponse = await fetchProducts;
+                if (!prodResponse.ok) throw new Error("Search Failed");
+                const prodData = await prodResponse.json();
+
+                console.log("📦 Products Found:", prodData.products);
+
+                if (!prodData.products || prodData.products.length === 0) {
+                    status.innerText = "No products found.";
+                    clearInterval(radarInterval);
+                    await sleep(2000);
+                    scanner.style.display = 'none';
+                    return;
+                }
+
+                status.innerText = "Products Found. Loading Matrix...";
+                await sleep(1000);
+
+                // Show Products IMMEDIATELY
+                clearInterval(radarInterval);
+                scanner.style.display = 'none';
+                document.getElementById('results-view').style.display = 'block';
+                document.getElementById('skeleton-loader').style.display = 'none';
+
+                const container = document.getElementById('products-container');
+                container.style.display = 'flex'; // Force Flex
+                container.style.opacity = '1';
+                container.innerHTML = '';
+
+                // Render products
+                prodData.products.forEach((p, i) => {
+                    console.log(`Rendering product ${i}:`, p.name);
+                    const cardDiv = document.createElement('div');
+                    cardDiv.className = 'col-lg-4 col-md-6';
+                    // Remove delay, show all instantly but smoothly
+                    cardDiv.innerHTML = `
+                        <div class="product-card">
+                            <div class="product-name">${p.name}</div>
+                            <div class="product-price">₹${p.price.toLocaleString()}</div>
+                            <div class="d-flex justify-content-between small text-muted">
+                                <span><i class="fas fa-store"></i> ${p.source}</span>
+                                <span class="text-warning"><i class="fas fa-star"></i> ${p.rating}</span>
+                            </div>
+                            <a href="${p.url}" target="_blank" class="btn btn-outline-light btn-sm w-100 mt-3">Inspect</a>
+                        </div>
+                    `;
+                    container.appendChild(cardDiv);
+                });
+
+                // 2. NEGOTIATE (Background)
+                document.getElementById('chat-wrapper').style.display = 'block';
+                document.getElementById('chat-container').innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+
+                // Combine original form data with found products for context
+                const chatData = { ...formData, products: prodData.products };
+
+                const negResponse = await fetch('/negotiate_chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(chatData) });
+                if (!negResponse.ok) throw new Error("Negotiation Failed");
+                const data = await negResponse.json(); // Standard 'data' object expected by visual sequencer
+
+                // Remove initial loader
+                document.getElementById('chat-container').innerHTML = '';
+
+                await runVisualSequence(data); // Pass full data to sequencer to handle chat rendering
+            } catch (e) {
+                console.error(e);
+                document.getElementById('scanner-status').innerText = "Connection Failed";
+            }
+        });
+
+        async function runVisualSequence(data) {
+            document.getElementById('results-view').style.display = 'block';
+
+            // Hide skeleton
+            document.getElementById('skeleton-loader').style.display = 'none';
+            const container = document.getElementById('products-container');
+            container.style.display = 'flex';
+            // DO NOT CLEAR CONTAINER - Products are already there from Phase 1
+
+            // UPDATE PREMIUM HIGHLIGHT
+            // UPDATE PREMIUM HIGHLIGHT to match FINAL CHOICE
+            if (data.final_choice) {
+                // Find the card with this URL/Name
+                const cards = container.getElementsByClassName('product-card');
+                for (let card of cards) {
+                    if (card.innerHTML.includes(data.final_choice.name)) {
+                        card.classList.add('premium-match');
+                        if (!card.querySelector('.premium-tag')) {
+                            const tag = document.createElement('div');
+                            tag.className = 'premium-tag';
+                            tag.innerText = 'AI Choice';
+                            card.insertBefore(tag, card.firstChild);
+                        }
+                    }
+                }
+            }
+
+            await sleep(500);
+
+            // PROGRESSIVE NEGOTIATION - Fast typing
+            document.getElementById('chat-wrapper').style.display = 'block';
+            const chatBox = document.getElementById('chat-container');
+
+            for (const msg of data.negotiation.conversation) {
+                // Quick typing indicator
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'typing-indicator';
+                typingDiv.innerHTML = '<span></span><span></span><span></span>';
+                chatBox.appendChild(typingDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                await sleep(400);  // Fast typing
+                typingDiv.remove();
+
+                // Show message
+                const isSeller = msg.role === 'seller';
+                const div = document.createElement('div');
+                div.className = `message ${isSeller ? 'msg-ai' : 'msg-user'}`;
+                div.innerHTML = `<span class="msg-label">${isSeller ? 'AURA SYSTEM' : 'BUYER'}</span>${msg.message}`;
+                div.style.opacity = '0';
+                chatBox.appendChild(div);
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                // Quick fade in
+                await sleep(50);
+                div.style.transition = 'opacity 0.2s';
+                div.style.opacity = '1';
+
+                await sleep(isSeller ? 600 : 400);  // Faster reading time
+            }
+
+            // Final agreement
+            if (data.final_choice) {
+                const finalDiv = document.getElementById('final-agreement');
+                finalDiv.innerHTML = `
+                    <div class="deal-card">
+                        <div class="text-muted text-uppercase">Negotiation Successful</div>
+                        <h3 class="mt-3 text-white">${data.final_choice.name}</h3>
+                        <div class="deal-price">₹${data.final_choice.price.toLocaleString()}</div>
+                        <a href="${data.final_choice.url}" target="_blank" class="btn-buy">Confirm Transaction</a>
+                    </div>
+                `;
+                finalDiv.style.display = 'block';
+                finalDiv.scrollIntoView({ behavior: 'smooth' });
+
+                // POPULATE DISTINCT JUDGE SECTION
+                if (data.final_choice.judge_analysis) {
+                    const ja = data.final_choice.judge_analysis;
+                    const probColor = ja.purchase_probability > 75 ? '#00ff9d' : (ja.purchase_probability > 50 ? '#ffcc00' : '#ff4444');
+
+                    const judgeContent = document.getElementById('judge-content');
+                    judgeContent.innerHTML = `
+                        <div class="row text-center align-items-center">
+                            <div class="col-md-6 mb-3">
+                                <div style="display: flex; flex-direction: column; gap: 5px;">
+                                    <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                                        <div style="font-size: 0.8rem; text-transform: uppercase; color: #aaa; letter-spacing: 1px;">
+                                            Purchase Probability
+                                        </div>
+                                        <div style="font-size: 2rem; font-weight: 800; color: ${probColor}; text-shadow: 0 0 10px ${probColor}40;">${ja.purchase_probability}%</div>
+                                        <div id="btn-view-analysis" style="font-size: 0.7rem; color: #ffd700; cursor: pointer; margin-top: 5px; text-decoration: underline;">
+                                            <i class="fas fa-server"></i> View Score Breakdown
+                                        </div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                                        <div style="font-size: 0.8rem; text-transform: uppercase; color: #aaa; letter-spacing: 1px;">Legitimacy Score</div>
+                                        <div style="font-size: 1.5rem; font-weight: bold; color: ${ja.is_real_product ? '#00ff9d' : '#ff4444'};">${ja.is_real_product ? 'VERIFIED' : 'UNVERIFIED'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="font-family: 'Courier New', monospace; font-size: 0.95rem; color: #eef; line-height: 1.6; text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-left: 2px solid #ffd700;">
+                                    <i class="fas fa-quote-left" style="color: #ffd700; margin-right: 8px;"></i>${ja.one_line_verdict}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px; border-top: 1px solid rgba(255,215,0,0.2); padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.75rem; color: #666;">SESSION ID: ${Math.random().toString(36).substr(2, 9).toUpperCase()}</span>
+                            <span style="font-size: 0.75rem; color: #ffd700; font-weight: bold;">ANALYSIS COMPLETE</span>
+                        </div>
+                    `;
+
+                    // Add Click Handler
+                    setTimeout(() => {
+                        const btn = document.getElementById('btn-view-analysis');
+                        if (btn) {
+                            btn.addEventListener('click', () => {
+                                const bd = ja.score_breakdown || {};
+                                const modalBody = document.getElementById('analysis-modal-body');
+
+                                if (bd.price && bd.price.score) {
+                                    // PROFESSIONAL VALIDATION MATRIX
+                                    modalBody.innerHTML = `
+                                        <div style="background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,215,0,0.2);">
+                                            <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid rgba(255,215,0,0.3); padding-bottom: 15px;">
+                                                <div style="font-size: 1.6rem; color: #ffd700; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">
+                                                    📊 PRODUCT VALIDATION MATRIX
+                                                </div>
+                                                <div style="font-size: 0.9rem; color: #aaa; margin-top: 8px; font-style: italic;">
+                                                    Comprehensive Analysis & Risk Assessment
+                                                </div>
+                                            </div>
+
+                                            ${Object.keys(bd).filter(k => k !== 'formula').map((key, idx) => {
+                                        const item = bd[key];
+                                        if (!item.score) return '';
+
+                                        const score = item.score;
+                                        const grade = score >= 90 ? 'A+' : score >= 80 ? 'A' : score >= 70 ? 'B+' : score >= 60 ? 'B' : score >= 50 ? 'C' : score >= 40 ? 'D' : 'F';
+                                        const gradeColor = score >= 80 ? '#00ff88' : score >= 60 ? '#ffd700' : score >= 40 ? '#ff9d00' : '#ff4444';
+                                        const statusLabel = score >= 80 ? 'EXCELLENT' : score >= 60 ? 'GOOD' : score >= 40 ? 'FAIR' : 'POOR';
+                                        const icons = {
+                                            query_match: '🎯 INTENT MATCH',
+                                            rating: '⭐ CUSTOMER RATING',
+                                            price: '💰 PRICING ANALYSIS',
+                                            reviews: '👥 SOCIAL PROOF',
+                                            brand: '🏢 BRAND TRUST',
+                                            source: '🛒 MARKETPLACE'
+                                        };
+                                        const categoryName = icons[key] || key.toUpperCase();
+
+                                        return `
+                                                    <div style="background: rgba(255,255,255,0.02); border-left: 4px solid ${gradeColor}; padding: 18px; margin-bottom: 18px; border-radius: 8px; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
+                                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                                            <div style="flex: 1;">
+                                                                <div style="font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 4px;">
+                                                                    ${categoryName}
+                                                                </div>
+                                                                <div style="display: flex; align-items: center; gap: 12px;">
+                                                                    <div style="background: rgba(0,0,0,0.5); display: inline-block; padding: 6px 16px; border-radius: 20px; font-weight: 700; color: ${gradeColor}; border: 1px solid ${gradeColor};">
+                                                                        ${score}/100
+                                                                    </div>
+                                                                    <div style="background: ${gradeColor}; color: #000; font-weight: 800; font-size: 1.1rem; padding: 4px 12px; border-radius: 6px; min-width: 45px; text-align: center;">
+                                                                        ${grade}
+                                                                    </div>
+                                                                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: ${gradeColor}; font-weight: 600;">
+                                                                        ${statusLabel}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: 6px; border: 1px dashed rgba(255,255,255,0.1);">
+                                                            <div style="font-size: 0.85rem; color: #ddd; line-height: 1.7; text-align: justify;">
+                                                                ${item.explanation}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                    }).join('')}
+
+                                            <hr style="border: none; border-top: 1px solid rgba(255,215,0,0.2); margin: 25px 0;">
+                                            
+                                            <div style="background: rgba(0,0,0,0.4); padding: 18px; border-radius: 10px; border-left: 4px solid #00ff88;">
+                                                <div style="font-size: 0.75rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600;">
+                                                    📐 SCORING METHODOLOGY
+                                                </div>
+                                                <code style="color: #00ff88; font-size: 0.85rem; display: block; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 4px;">
+                                                    ${bd.formula}
+                                                </code>
+                                            </div>
+
+                                            <div style="margin-top: 20px; padding: 18px; background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,215,0,0.05) 100%); border-radius: 10px; border: 1px solid rgba(255,215,0,0.3);">
+                                                <div style="font-size: 0.85rem; color: #ffd700; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
+                                                    ✅ FINAL VERDICT
+                                                </div>
+                                                <div style="font-size: 0.95rem; color: #fff; line-height: 1.6;">
+                                                    ${ja.one_line_verdict}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+
+                                    // Matrix displayed instantly, no animation needed
+
+                                    // Matrix displayed instantly, no animation needed
+                                } else {
+                                    modalBody.innerHTML = "<div class='text-center py-5'>Detailed breakdown unavailable for this product.</div>";
+                                }
+
+                                const myModal = new bootstrap.Modal(document.getElementById('analysisModal'));
+                                myModal.show();
+                            });
+                        }
+                    }, 500);
+
+                    // Initialize Tooltips
+                    setTimeout(() => {
+                        const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+                        tooltips.forEach(t => new bootstrap.Tooltip(t));
+                    }, 100);
+
+                    setTimeout(() => {
+                        const judgeView = document.getElementById('judge-view');
+                        judgeView.style.display = 'block';
+                        judgeView.scrollIntoView({ behavior: 'smooth' });
+                    }, 500);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

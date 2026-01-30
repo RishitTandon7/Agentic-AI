@@ -1,0 +1,12 @@
+# Requirements for LLM as Judge System
+
+# Core dependencies
+requests>=2.31.0
+
+# Testing
+unittest2>=1.1.0  # Optional: Enhanced unittest features
+
+# Optional: For notebook demonstrations
+jupyter>=1.0.0
+matplotlib>=3.7.0
+pandas>=2.0.0

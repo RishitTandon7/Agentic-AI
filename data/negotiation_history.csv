@@ -1,0 +1,281 @@
+timestamp,product_id,buyer_offer,seller_response,status,round
+1766406368.0798614,http://mock-url-0.com,0,I have a great offer for you: Simulated smartphone 1 at 33632. (Auto-generated: Gemini not configured),pitch,1
+1766406368.0805643,http://mock-url-0.com,30268,I offer 30268.,offer,1
+1766406368.0805643,http://mock-url-0.com,30268,I have a great offer for you: Simulated smartphone 1 at 33632. (Auto-generated: Gemini not configured),counter,2
+1766406368.081099,http://mock-url-0.com,31950.0,I'll take it.,final_response,2
+1766406368.081099,http://mock-url-1.com,0,I have a great offer for you: Simulated smartphone 2 at 34113. (Auto-generated: Gemini not configured),pitch,1
+1766406368.081099,http://mock-url-1.com,30701,I offer 30701.,offer,1
+1766406368.081099,http://mock-url-1.com,30701,I have a great offer for you: Simulated smartphone 2 at 34113. (Auto-generated: Gemini not configured),counter,2
+1766406368.081099,http://mock-url-1.com,32407.0,I'll take it.,final_response,2
+1766406368.081099,http://mock-url-2.com,0,I have a great offer for you: Simulated smartphone 3 at 36137. (Auto-generated: Gemini not configured),pitch,1
+1766406368.081099,http://mock-url-2.com,32523,I offer 32523.,offer,1
+1766406368.081099,http://mock-url-2.com,32523,I have a great offer for you: Simulated smartphone 3 at 36137. (Auto-generated: Gemini not configured),counter,2
+1766406368.081099,http://mock-url-2.com,34330.0,I'll take it.,final_response,2
+1766406758.174939,https://www.amazon.com/smartphone/s?k=smartphone,0,I have a great offer for you: Smartphone - Amazon.com (Est. Price) at 31712.95.,pitch,1
+1766406758.1754687,https://www.amazon.com/smartphone/s?k=smartphone,28541,I offer 28541.,offer,1
+1766406758.3271122,https://www.amazon.com/smartphone/s?k=smartphone,28541,I have a great offer for you: Smartphone - Amazon.com (Est. Price) at 31712.95.,counter,2
+1766406758.3277602,https://www.amazon.com/smartphone/s?k=smartphone,30126.975,I'll take it.,final_response,2
+1766406758.6647022,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,0,I have a great offer for you: POWERUP 4.0 The Next-Generation Smartphone ... - Amazon.com (Est. Price) at 33095.89.,pitch,1
+1766406758.6654816,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,29786,I offer 29786.,offer,1
+1766406758.7991474,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,29786,I have a great offer for you: POWERUP 4.0 The Next-Generation Smartphone ... - Amazon.com (Est. Price) at 33095.89.,counter,2
+1766406758.7996788,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,31440.945,I'll take it.,final_response,2
+1766406759.128782,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,0,I have a great offer for you: 52 Ways to Connect with Your Smartphone Obsessed Kid: How to ... (Est. Price) at 48816.5.,pitch,1
+1766406759.1293347,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,40000,I offer 40000.,offer,1
+1766406759.318989,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,40000,I have a great offer for you: 52 Ways to Connect with Your Smartphone Obsessed Kid: How to ... (Est. Price) at 48816.5.,counter,2
+1766406759.318989,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,40000,My best offer is 40000.,final_response,2
+1766406780.8836524,https://www.amazon.com/smartphone/s?k=smartphone,0,I have a great offer for you: Smartphone - Amazon.com (Est. Price) at 29970.71.,pitch,1
+1766406780.8847082,https://www.amazon.com/smartphone/s?k=smartphone,26973,I offer 26973.,offer,1
+1766406781.01404,https://www.amazon.com/smartphone/s?k=smartphone,26973,I have a great offer for you: Smartphone - Amazon.com (Est. Price) at 29970.71.,counter,2
+1766406781.0192506,https://www.amazon.com/smartphone/s?k=smartphone,28471.855,I'll take it.,final_response,2
+1766406781.4720974,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,0,I have a great offer for you: POWERUP 4.0 The Next-Generation Smartphone ... - Amazon.com (Est. Price) at 30092.13.,pitch,1
+1766406781.4754844,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,27082,I offer 27082.,offer,1
+1766406781.6070645,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,27082,I have a great offer for you: POWERUP 4.0 The Next-Generation Smartphone ... - Amazon.com (Est. Price) at 30092.13.,counter,2
+1766406781.6086137,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,28587.065000000002,I'll take it.,final_response,2
+1766406781.9907076,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,0,I have a great offer for you: 52 Ways to Connect with Your Smartphone Obsessed Kid: How to ... (Est. Price) at 50532.93.,pitch,1
+1766406781.991235,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,40000,I offer 40000.,offer,1
+1766406782.1878061,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,40000,I have a great offer for you: 52 Ways to Connect with Your Smartphone Obsessed Kid: How to ... (Est. Price) at 50532.93.,counter,2
+1766406782.188619,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,40000,My best offer is 40000.,final_response,2
+1766406811.9227226,https://www.amazon.com/smartphone/s?k=smartphone,0,I have a great offer for you: Smartphone - Amazon.com (Est. Price) at 40148.06.,pitch,1
+1766406811.92389,https://www.amazon.com/smartphone/s?k=smartphone,36133,I offer 36133.,offer,1
+1766406812.07398,https://www.amazon.com/smartphone/s?k=smartphone,36133,I have a great offer for you: Smartphone - Amazon.com (Est. Price) at 40148.06.,counter,2
+1766406812.07398,https://www.amazon.com/smartphone/s?k=smartphone,38140.53,I'll take it.,final_response,2
+1766406812.38623,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,0,I have a great offer for you: POWERUP 4.0 The Next-Generation Smartphone ... - Amazon.com (Est. Price) at 33948.03.,pitch,1
+1766406812.3881233,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,30553,I offer 30553.,offer,1
+1766406812.5627756,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,30553,I have a great offer for you: POWERUP 4.0 The Next-Generation Smartphone ... - Amazon.com (Est. Price) at 33948.03.,counter,2
+1766406812.5627756,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,32250.515,I'll take it.,final_response,2
+1766406812.941409,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,0,I have a great offer for you: 52 Ways to Connect with Your Smartphone Obsessed Kid: How to ... (Est. Price) at 51982.91.,pitch,1
+1766406812.9422882,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,40000,I offer 40000.,offer,1
+1766406813.0955343,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,40000,I have a great offer for you: 52 Ways to Connect with Your Smartphone Obsessed Kid: How to ... (Est. Price) at 51982.91.,counter,2
+1766406813.0963738,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,40000,My best offer is 40000.,final_response,2
+1766406856.1106212,https://www.amazon.com/smartphone/s?k=smartphone,0,I have a great offer for you: Smartphone - Amazon.com (Est. Price) at 42083.22.,pitch,1
+1766406856.111216,https://www.amazon.com/smartphone/s?k=smartphone,37874,I offer 37874.,offer,1
+1766406856.3203044,https://www.amazon.com/smartphone/s?k=smartphone,37874,I have a great offer for you: Smartphone - Amazon.com (Est. Price) at 42083.22.,counter,2
+1766406856.3217566,https://www.amazon.com/smartphone/s?k=smartphone,39978.61,I'll take it.,final_response,2
+1766406856.6369257,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,0,I have a great offer for you: POWERUP 4.0 The Next-Generation Smartphone ... - Amazon.com (Est. Price) at 30532.13.,pitch,1
+1766406856.6384115,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,27478,I offer 27478.,offer,1
+1766406856.818168,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,27478,I have a great offer for you: POWERUP 4.0 The Next-Generation Smartphone ... - Amazon.com (Est. Price) at 30532.13.,counter,2
+1766406856.819231,https://www.amazon.com/Next-Generation-Smartphone-Controlled-Controlled-Stabilizer/dp/B08JLZVB3Z,29005.065000000002,I'll take it.,final_response,2
+1766406857.032667,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,0,I have a great offer for you: 52 Ways to Connect with Your Smartphone Obsessed Kid: How to ... (Est. Price) at 33577.04.,pitch,1
+1766406857.0332398,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,30219,I offer 30219.,offer,1
+1766406857.1922224,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,30219,I have a great offer for you: 52 Ways to Connect with Your Smartphone Obsessed Kid: How to ... (Est. Price) at 33577.04.,counter,2
+1766406857.1933742,https://www.amazon.com/Ways-Connect-Your-Smartphone-Obsessed/dp/1634097076,31898.02,I'll take it.,final_response,2
+1766407405.4481063,https://www.amazon.com/LORYERGO-Adjustable-Laptop-Stand-Portable/dp/B09D3VD47F,0,"I strongly recommend the LORYERGO Laptop Stand for Desk, Adjustable ... - Amazon.com (Est. Price). It has a stellar rating of 4.7 with 4106 reviews. Price is 65799.77.",pitch,1
+1766407405.6509268,https://www.amazon.com/LORYERGO-Adjustable-Laptop-Stand-Portable/dp/B09D3VD47F,0,,response,1
+1766407405.9544518,https://www.amazon.com/KYY-Extender-Monitor-Portable-Extended/dp/B0DK6HJ1TB,0,"I strongly recommend the KYY Laptop Screen Extender, 15.6"" Monitor Extender ... - Amazon.com (Est. Price). It has a stellar rating of 4.6 with 4624 reviews. Price is 73883.04.",pitch,2
+1766407406.1684153,https://www.amazon.com/KYY-Extender-Monitor-Portable-Extended/dp/B0DK6HJ1TB,0,,response,2
+1766408532.850867,http://mock-url-1.com,0,I strongly recommend the Simulated headset 2. It has a stellar rating of 4.6 with 3337 reviews. Price is 13968. (Auto-generated: Gemini not configured),pitch,1
+1766408532.851964,http://mock-url-1.com,0,,response,1
+1766408563.095991,https://www.amazon.com/Poly-Plantronics-Single-Ear-USB-Bluetooth/dp/B09BBSB3J4,0,I strongly recommend the Poly - Voyager 4310 UC Wireless Headset + Charge ... - Amazon.com (Est. Price). It has a stellar rating of 5.0 with 4417 reviews. Price is 18245.21.,pitch,1
+1766408563.2578616,https://www.amazon.com/Poly-Plantronics-Single-Ear-USB-Bluetooth/dp/B09BBSB3J4,0,,response,1
+1766408563.6503863,https://www.amazon.com/Gtheos-Bluetooth-Headphones-Detachable-Microphone/dp/B0B4B2HW2N,0,I strongly recommend the Gtheos 2.4GHz Wireless Gaming Headset for PS5 ... - Amazon.com (Est. Price). It has a stellar rating of 4.8 with 4221 reviews. Price is 9082.4.,pitch,2
+1766408563.8194497,https://www.amazon.com/Gtheos-Bluetooth-Headphones-Detachable-Microphone/dp/B0B4B2HW2N,0,,response,2
+1766408869.0012856,https://www.amazon.com/Gtheos-Bluetooth-Headphones-Detachable-Microphone/dp/B0B4B2HW2N,0,I strongly recommend the Gtheos 2.4GHz Wireless Gaming Headset for PS5 ... - Amazon.com (Est. Price). It has a stellar rating of 4.8 with 4357 reviews. Price is 15985.3.,pitch,1
+1766408869.1577353,https://www.amazon.com/Gtheos-Bluetooth-Headphones-Detachable-Microphone/dp/B0B4B2HW2N,0,,response,1
+1766408869.4984682,https://www.amazon.com/Poly-Plantronics-Single-Ear-USB-Bluetooth/dp/B09BBSB3J4,0,I strongly recommend the Poly - Voyager 4310 UC Wireless Headset + Charge ... - Amazon.com (Est. Price). It has a stellar rating of 4.3 with 4514 reviews. Price is 17307.43.,pitch,2
+1766408869.6453645,https://www.amazon.com/Poly-Plantronics-Single-Ear-USB-Bluetooth/dp/B09BBSB3J4,0,,response,2
+1766409166.7643356,https://www.amazon.com/ZIUMIER-Microphone-Surround-Over-Ear-Headphones/dp/B07ZF8T63K,0,I strongly recommend the ZIUMIER Gaming Headset with Microphone ... - Amazon.com (Est. Price). It has a stellar rating of 4.7 with 857 reviews. Price is 11649.5.,pitch,1
+1766409166.9257097,https://www.amazon.com/ZIUMIER-Microphone-Surround-Over-Ear-Headphones/dp/B07ZF8T63K,0,,response,1
+1766409611.5311456,https://www.amazon.com/Bluetooth-Rechargeable-Wireless-Notebook-Laptop/dp/B07KNQRQ3P,0,"I strongly recommend the ZERU Bluetooth Mouse,Rechargeable Wireless ... - Amazon.com (Est. Price). It has a stellar rating of 4.8 with 603 reviews. Price is 519.36.",pitch,1
+1766409611.8410268,https://www.amazon.com/Bluetooth-Rechargeable-Wireless-Notebook-Laptop/dp/B07KNQRQ3P,0,,response,1
+1766409612.19806,https://www.amazon.com/Logitech-910-005360-Wireless-Advanced-Optical/dp/B07BWPQBL7,0,I strongly recommend the Logitech Wireless Mini Mouse M187 Ultra Portable ... - Amazon.com (Est. Price). It has a stellar rating of 4.4 with 534 reviews. Price is 435.1.,pitch,2
+1766409612.4126437,https://www.amazon.com/Logitech-910-005360-Wireless-Advanced-Optical/dp/B07BWPQBL7,0,,response,2
+1766410362.1991055,https://www.amazon.com/Samson-Technologies-SALTS50-LTS50-Laptop/dp/B00OZES766,0,I strongly recommend the SAMSON LTS50 Laptop Stand : Samson Audio ... - Amazon.com (Est. Price). It has a stellar rating of 4.9 with 4279 reviews. Price is 63727.65.,pitch,1
+1766410362.3544714,https://www.amazon.com/Samson-Technologies-SALTS50-LTS50-Laptop/dp/B00OZES766,0,,response,1
+1766907109.4680645,https://www.amazon.com/GASHELL-Noodle-Handles-Stovetop-Electric/dp/B0BPSN8F21,0,I strongly recommend the GASHELL Noodle Board Stove Cover with Handles ... - Amazon.com (Est. Price). It has a stellar rating of 4.9 with 2685 reviews. Price is 1652.57.,pitch,1
+1766907109.6835208,https://www.amazon.com/GASHELL-Noodle-Handles-Stovetop-Electric/dp/B0BPSN8F21,0,,response,1
+1766907227.7344272,https://www.amazon.com/Blissful-Diary-Breathable-Windproof-Must-Have/dp/B0DMFDF6DP,0,"I strongly recommend the Blissful Diary Baby Car Seat Cover, Extra Large Mesh ... - Amazon.com (Est. Price). It has a stellar rating of 4.3 with 2268 reviews. Price is 1598.92.",pitch,1
+1766907227.896443,https://www.amazon.com/Blissful-Diary-Breathable-Windproof-Must-Have/dp/B0DMFDF6DP,0,,response,1
+1766907328.4600074,https://www.amazon.com/Galaxy-S24-Ultra-16ft-Drop-Protective/dp/B0CP71H6MM,0,"I strongly recommend the for Galaxy S24 Ultra Case,with Camera Cover,[Military ... - Amazon.com (Est. Price). It has a stellar rating of 4.7 with 464 reviews. Price is 1497.42.",pitch,1
+1766907328.627647,https://www.amazon.com/Galaxy-S24-Ultra-16ft-Drop-Protective/dp/B0CP71H6MM,0,,response,1
+1766907452.250417,https://www.amazon.com/Galaxy-S24-Ultra-16ft-Drop-Protective/dp/B0CP71H6MM,0,"I strongly recommend the for Galaxy S24 Ultra Case,with Camera Cover,[Military ... - Amazon.com (Est. Price). It has a stellar rating of 4.8 with 408 reviews. Price is 1792.04.",pitch,1
+1766907452.402003,https://www.amazon.com/Galaxy-S24-Ultra-16ft-Drop-Protective/dp/B0CP71H6MM,0,,response,1
+1766907520.2945273,https://www.amazon.com/DNGN-Samsung-Galaxy-Ultra-Clear/dp/B0CLJJDLJP,0,"I strongly recommend the DNGN for Samsung Galaxy S24 Ultra Case, Clear ... - Amazon.com (Est. Price). It has a stellar rating of 4.4 with 4478 reviews. Price is 1525.35.",pitch,1
+1766907520.48008,https://www.amazon.com/DNGN-Samsung-Galaxy-Ultra-Clear/dp/B0CLJJDLJP,0,,response,1
+1766907846.4567454,https://www.amazon.com/Apple-iPhone-15-Pro-Max/dp/B0CMZDY2ZV,0,"I strongly recommend the Apple iPhone 15 Pro Max, 256GB, White Titanium ... - Amazon.com (Est. Price). It has a stellar rating of 4.9 with 2305 reviews. Price is 50614.29.",pitch,1
+1766907846.610035,https://www.amazon.com/Apple-iPhone-15-Pro-Max/dp/B0CMZDY2ZV,0,,response,1
+1766907848.843116,https://www.machines.com.my/products/iphone-15-mtp13zp-a,0,I strongly recommend the iPhone 15 128GB Pink – Machines (Est. Price). It has a stellar rating of 4.6 with 823 reviews. Price is 61158.75.,pitch,1
+1766907848.991062,https://www.machines.com.my/products/iphone-15-mtp13zp-a,0,,response,1
+1766908240.9299126,https://www.amazon.com/Pelican-Protector-Protection-Wireless-Charging/dp/B0CQ16R2CQ,0,I strongly recommend the Pelican Protector - Samsung Galaxy S24 Ultra Case ... - Amazon.com (Est. Price). It has a stellar rating of 4.9 with 3324 reviews. Price is 1523.26.,pitch,1
+1766908241.264759,https://www.amazon.com/Pelican-Protector-Protection-Wireless-Charging/dp/B0CQ16R2CQ,0,,response,1
+1766908430.936233,https://www.amazon.com/Apple-iPhone-15-Pro-Titanium/dp/B0CMZ9KS3G,0,"I strongly recommend the Apple iPhone 15 Pro, 512GB, Blue Titanium ... - Amazon.com (Est. Price). It has a stellar rating of 5.0 with 2397 reviews. Price is 61489.71.",pitch,1
+1766908431.0867398,https://www.amazon.com/Apple-iPhone-15-Pro-Titanium/dp/B0CMZ9KS3G,0,,response,1
+1766908433.298902,https://www.smart3c.com.tw/en/categories/iphone-15%E7%B3%BB%E5%88%97,0,I strongly recommend the iPhone 15系列. It has a stellar rating of 4.8 with 4257 reviews. Price is 29500.0.,pitch,1
+1766908433.4479918,https://www.smart3c.com.tw/en/categories/iphone-15%E7%B3%BB%E5%88%97,0,,response,1
+1766908510.536619,https://www.armorsuit.com/collections/samsung-galaxy-s24-ultra,0,I strongly recommend the Samsung Galaxy S24 Ultra (Est. Price). It has a stellar rating of 4.5 with 841 reviews. Price is 2090.52.,pitch,1
+1766908510.6869407,https://www.armorsuit.com/collections/samsung-galaxy-s24-ultra,0,,response,1
+1766908952.975657,https://www.istore.co.za/iphone-13-128gb-midnight1,0,I strongly recommend the iPhone 13 128GB - Midnight (Est. Price). It has a stellar rating of 4.8 with 4531 reviews. Price is 708.44.,pitch,1
+1766908953.1469543,https://www.istore.co.za/iphone-13-128gb-midnight1,0,,response,1
+1766909163.1552846,https://www.amazon.in/amazon-basics-Iphone-Thermoplastic-Polyurethane_Sierra/dp/B0BYNXYW9W,0,I strongly recommend the amazon basics Back Case Cover For Iphone 11 (Thermoplastic ... (Est. Price). It has a stellar rating of 4.1 with 1199 reviews. Price is 1566.02.,pitch,1
+1766909163.509269,https://www.amazon.in/amazon-basics-Iphone-Thermoplastic-Polyurethane_Sierra/dp/B0BYNXYW9W,0,,response,1
+1766909741.7262063,"https://www.apple.com/in/mac/compare/?modelList=MacBook-Air-M4,MacBook-Pro-14-M4-Pro",0,I strongly recommend the MacBook Air 13″ (M4) vs MacBook Pro 14″ (M4 Pro) - Apple (IN). It has a stellar rating of 5.0 with 3679 reviews. Price is 100.0.,pitch,1
+1766909742.0721889,"https://www.apple.com/in/mac/compare/?modelList=MacBook-Air-M4,MacBook-Pro-14-M4-Pro",0,,response,1
+1766909933.7308676,https://www.amazon.in/ZEROTO-Compatible-Cartoon-Silicone-Protection/dp/B0D9THXB3X,0,I strongly recommend the ZEROTO Back Case Cover Compatible for iPhone XR | Cute Fun ... (Est. Price). It has a stellar rating of 4.8 with 934 reviews. Price is 2035.08.,pitch,1
+1766909933.9084349,https://www.amazon.in/ZEROTO-Compatible-Cartoon-Silicone-Protection/dp/B0D9THXB3X,0,,response,1
+1766910116.2877357,https://www.amazon.in/toy-flip-phone-for-kids/s?k=toy+flip+phone+for+kids,0,I strongly recommend the Toy Flip Phone For Kids - Amazon.in (Est. Price). It has a stellar rating of 3.7 with 525 reviews. Price is 371.54.,pitch,1
+1766910116.4525762,https://www.amazon.in/toy-flip-phone-for-kids/s?k=toy+flip+phone+for+kids,0,,response,1
+1766910209.9381773,https://www.amazon.in/s22-magsafe-cover/s?k=s22+magsafe+cover,0,I strongly recommend the S22 Magsafe Cover - Amazon.in (Est. Price). It has a stellar rating of 4.9 with 4002 reviews. Price is 1131.75.,pitch,1
+1766910210.118935,https://www.amazon.in/s22-magsafe-cover/s?k=s22+magsafe+cover,0,,response,1
+1766910210.2860677,https://www.amazon.in/samsung-galaxy-s22-plus-cover/s?k=samsung+galaxy+s22+plus+cover,0,I strongly recommend the Samsung Galaxy S22 Plus Cover - Amazon.in (Est. Price). It has a stellar rating of 4.6 with 2163 reviews. Price is 849.02.,pitch,2
+1766910210.6058526,https://www.amazon.in/samsung-galaxy-s22-plus-cover/s?k=samsung+galaxy+s22+plus+cover,0,,response,2
+1766910525.4766622,https://www.amazon.in/24mm-watch-straps-for-men-silicone/s?k=24mm+watch+straps+for+men+silicone,0,I strongly recommend the 24mm Watch Straps For Men Silicone - Amazon.in (Est. Price). It has a stellar rating of 4.5 with 4174 reviews. Price is 1953.46.,pitch,1
+1766910525.7882314,https://www.amazon.in/24mm-watch-straps-for-men-silicone/s?k=24mm+watch+straps+for+men+silicone,0,,response,1
+1766911065.514938,https://www.flipkart.com/acm-watch-strap-metal-samsung-galaxy-watch4-classic-46mm-sm-r890nzkainu-black-smart/p/itm9d2d550688758,0,I strongly recommend the ACM Watch Strap Metal for Samsung Galaxy Watch4 Classic 46mm .... It has a stellar rating of 4.6 with 1008 reviews. Price is 199.0.,pitch,1
+1766911065.6780784,https://www.flipkart.com/acm-watch-strap-metal-samsung-galaxy-watch4-classic-46mm-sm-r890nzkainu-black-smart/p/itm9d2d550688758,0,,response,1
+1766911415.2263846,https://www.flipkart.com/acm-pack-3-watch-strap-samsung-galaxy-4-classic-46mm-black-blue-brown-smart/p/itm6f996f7cc89c7,0,I strongly recommend the ACM Pack of 3 Watch Strap for |Samsung Galaxy Watch 4 Classic .... It has a stellar rating of 4.9 with 1212 reviews. Price is 297.0.,pitch,1
+1766911415.3765945,https://www.flipkart.com/acm-pack-3-watch-strap-samsung-galaxy-4-classic-46mm-black-blue-brown-smart/p/itm6f996f7cc89c7,0,,response,1
+1766911785.9510849,https://www.flipkart.com/acm-watch-strap-metal-samsung-galaxy-watch4-classic-46mm-sm-r890nzkainu-black-smart/p/itm9d2d550688758,0,I strongly recommend the ACM Watch Strap Metal for Samsung Galaxy Watch4 Classic 46mm .... It has a stellar rating of 4.5 with 1424 reviews. Price is 199.0.,pitch,1
+1766911786.1136868,https://www.flipkart.com/acm-watch-strap-metal-samsung-galaxy-watch4-classic-46mm-sm-r890nzkainu-black-smart/p/itm9d2d550688758,0,,response,1
+1766912918.4428625,https://www.flipkart.com/necesories-nylon-loop-band-samsung-galaxy-watch-7-6-5-4-classic-breathable-durable-strap-no-gap-design-adjustable-fit-stylish-colors-smart/p/itm793f35d998bfb,0,This NECESORIES Nylon Loop Band for Samsung Galaxy Watch 7/6/5/4 ... is a top pick at ₹159.0 on flipkart with a 4.2 star rating.,pitch,1
+1766912918.7744792,https://www.flipkart.com/necesories-nylon-loop-band-samsung-galaxy-watch-7-6-5-4-classic-breathable-durable-strap-no-gap-design-adjustable-fit-stylish-colors-smart/p/itm793f35d998bfb,0,,response,1
+1766912919.4236624,https://www.flipkart.com/necesories-nylon-loop-band-samsung-galaxy-watch-7-6-5-4-classic-breathable-durable-strap-no-gap-design-adjustable-fit-stylish-colors-smart/p/itm793f35d998bfb,0,This NECESORIES Nylon Loop Band for Samsung Galaxy Watch 7/6/5/4 ... is a top pick at ₹159.0 on flipkart with a 4.2 star rating.,pitch,2
+1766912919.7798443,https://www.flipkart.com/necesories-nylon-loop-band-samsung-galaxy-watch-7-6-5-4-classic-breathable-durable-strap-no-gap-design-adjustable-fit-stylish-colors-smart/p/itm793f35d998bfb,0,,response,2
+1766913167.2647793,https://www.amazon.in/Spigen-Rugged-Armor-Galaxy-Classic/dp/B09C3HCL4X,0,This Spigen Rugged Armor Pro for Samsung Galaxy Watch 4 Classic ... is a top pick at ₹614.0 on amazon with a 4.3 star rating.,pitch,1
+1766913167.4585695,https://www.amazon.in/Spigen-Rugged-Armor-Galaxy-Classic/dp/B09C3HCL4X,0,,response,1
+1766913168.239935,https://www.amazon.in/Spigen-Rugged-Armor-Galaxy-Classic/dp/B09C3HCL4X,0,This Spigen Rugged Armor Pro for Samsung Galaxy Watch 4 Classic ... is a top pick at ₹614.0 on amazon with a 4.3 star rating.,pitch,2
+1766913168.4898007,https://www.amazon.in/Spigen-Rugged-Armor-Galaxy-Classic/dp/B09C3HCL4X,0,,response,2
+1766913248.4169793,https://www.croma.com/l/gripp-watch-strap-0afz07a.html,0,This Buy Gripp Watch Straps Online at Best Prices | Croma (Price varies - check link) is a top pick at ₹1800.0 on croma with a 4.1 star rating.,pitch,1
+1766913248.654397,https://www.croma.com/l/gripp-watch-strap-0afz07a.html,0,,response,1
+1766913249.3959816,https://www.croma.com/l/gripp-watch-strap-0afz07a.html,0,This Buy Gripp Watch Straps Online at Best Prices | Croma (Price varies - check link) is a top pick at ₹1800.0 on croma with a 4.1 star rating.,pitch,2
+1766913249.6261837,https://www.croma.com/l/gripp-watch-strap-0afz07a.html,0,,response,2
+1766913640.149723,https://www.amazon.in/Spigen-Rugged-Armor-Galaxy-Classic/dp/B09C3HCL4X,0,This Spigen Rugged Armor Pro for Samsung Galaxy Watch 4 Classic ... is a top pick at ₹614.0 on amazon with a 3.8 star rating.,pitch,1
+1766913640.4744873,https://www.amazon.in/Spigen-Rugged-Armor-Galaxy-Classic/dp/B09C3HCL4X,0,,response,1
+1766913641.1562293,https://www.amazon.in/Spigen-Rugged-Armor-Galaxy-Classic/dp/B09C3HCL4X,0,This Spigen Rugged Armor Pro for Samsung Galaxy Watch 4 Classic ... is a top pick at ₹614.0 on amazon with a 3.8 star rating.,pitch,2
+1766913641.5621715,https://www.amazon.in/Spigen-Rugged-Armor-Galaxy-Classic/dp/B09C3HCL4X,0,,response,2
+1766913690.229633,https://www.croma.com/l/gripp-watch-strap-0afz07a.html,0,This Buy Gripp Watch Straps Online at Best Prices | Croma (Price varies - check link) is a top pick at ₹1890.0 on croma with a 4.7 star rating.,pitch,1
+1766913690.574527,https://www.croma.com/l/gripp-watch-strap-0afz07a.html,0,,response,1
+1766915958.676223,https://www.croma.com/samsung-galaxy-watch4-classic-smartwatch-with-activity-tracker-46mm-super-amoled-display-water-resistant-black-strap-/p/242905,0,This Buy SAMSUNG Galaxy Watch4 Classic Smartwatch with Activity ... (Price ~₹1400 - verify) (Price varies - check link) is a top pick at ₹1400.0 on croma with a 4.7 star rating.,pitch,1
+1766915958.8399632,https://www.croma.com/samsung-galaxy-watch4-classic-smartwatch-with-activity-tracker-46mm-super-amoled-display-water-resistant-black-strap-/p/242905,0,,response,1
+1766916187.4378479,https://www.amazon.in/YODI-Genuine-Leather-Compatible-Smartwatch/dp/B0BTWGPKDW,0,This YODI 20mm Soft Genuine Leather Hybrid Watch Band Compatible ... (Price ~₹1540 - verify) (Price varies - check link) is a top pick at ₹1540.0 on amazon with a 4.0 star rating.,pitch,1
+1766916187.788942,https://www.amazon.in/YODI-Genuine-Leather-Compatible-Smartwatch/dp/B0BTWGPKDW,0,,response,1
+1766916188.290132,https://www.amazon.in/YODI-Genuine-Leather-Compatible-Smartwatch/dp/B0BTWGPKDW,0,This YODI 20mm Soft Genuine Leather Hybrid Watch Band Compatible ... (Price ~₹1540 - verify) (Price varies - check link) is a top pick at ₹1540.0 on amazon with a 4.0 star rating.,pitch,2
+1766916188.63212,https://www.amazon.in/YODI-Genuine-Leather-Compatible-Smartwatch/dp/B0BTWGPKDW,0,,response,2
+1766916460.5010629,https://www.amazon.in/YODI-Genuine-Leather-Compatible-Smartwatch/dp/B0BTWGPKDW,0,This YODI 20mm Soft Genuine Leather Hybrid Watch Band Compatible ... (Price ~₹700 - verify) (Price varies - check link) is a top pick at ₹700.0 on amazon with a 4.7 star rating.,pitch,1
+1766916460.7669399,https://www.amazon.in/YODI-Genuine-Leather-Compatible-Smartwatch/dp/B0BTWGPKDW,0,,response,1
+1766916461.4659836,https://www.amazon.in/YODI-Genuine-Leather-Compatible-Smartwatch/dp/B0BTWGPKDW,0,This YODI 20mm Soft Genuine Leather Hybrid Watch Band Compatible ... (Price ~₹700 - verify) (Price varies - check link) is a top pick at ₹700.0 on amazon with a 4.7 star rating.,pitch,2
+1766916461.7469182,https://www.amazon.in/YODI-Genuine-Leather-Compatible-Smartwatch/dp/B0BTWGPKDW,0,,response,2
+1766916511.1818743,https://www.amazon.in/YODI-Genuine-Leather-Compatible-Smartwatch/dp/B0BTWGPKDW,0,This YODI 20mm Soft Genuine Leather Hybrid Watch Band Compatible ... (Price ~₹1400 - verify) (Price varies - check link) is a top pick at ₹1400.0 on amazon with a 4.0 star rating.,pitch,1
+1766916511.3334706,https://www.amazon.in/YODI-Genuine-Leather-Compatible-Smartwatch/dp/B0BTWGPKDW,0,,response,1
+1766916512.1583145,https://www.amazon.in/YODI-Genuine-Leather-Compatible-Smartwatch/dp/B0BTWGPKDW,0,This YODI 20mm Soft Genuine Leather Hybrid Watch Band Compatible ... (Price ~₹1400 - verify) (Price varies - check link) is a top pick at ₹1400.0 on amazon with a 4.0 star rating.,pitch,2
+1766916512.2950587,https://www.amazon.in/YODI-Genuine-Leather-Compatible-Smartwatch/dp/B0BTWGPKDW,0,,response,2
+1766916871.0897892,https://www.amazon.in/Magnetic-Leather-D-Buckle-Eco-Leather-Silicone/dp/B0D46Z4TRL,0,This Magnetic Leather Strap for Samsung Galaxy Watch 7/6/5/4 Strap ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.1 star rating.,pitch,1
+1766916871.2375362,https://www.amazon.in/Magnetic-Leather-D-Buckle-Eco-Leather-Silicone/dp/B0D46Z4TRL,0,,response,1
+1766916872.0860753,https://www.amazon.in/Magnetic-Leather-D-Buckle-Eco-Leather-Silicone/dp/B0D46Z4TRL,0,This Magnetic Leather Strap for Samsung Galaxy Watch 7/6/5/4 Strap ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.1 star rating.,pitch,2
+1766916872.253766,https://www.amazon.in/Magnetic-Leather-D-Buckle-Eco-Leather-Silicone/dp/B0D46Z4TRL,0,,response,2
+1766917148.2984989,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.2 star rating.,pitch,1
+1766917148.4759963,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766917149.255975,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.2 star rating.,pitch,2
+1766917149.4234316,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,2
+1766917214.419985,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 3.5 star rating.,pitch,1
+1766917214.5747113,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766917215.3874805,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 3.5 star rating.,pitch,2
+1766917215.5701897,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,2
+1766917344.0035563,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.8 star rating.,pitch,1
+1766917344.311373,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766917650.3998764,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.9 star rating.,pitch,1
+1766917650.7311091,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766917783.491116,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.2 star rating.,pitch,1
+1766917783.6277616,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766917784.4339218,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.2 star rating.,pitch,2
+1766917784.5788858,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,2
+1766917899.6850731,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.8 star rating.,pitch,1
+1766917899.8451014,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766917900.6550057,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.8 star rating.,pitch,2
+1766917900.815231,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,2
+1766918009.0174625,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.9 star rating.,pitch,1
+1766918009.1903102,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766918009.9630115,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.9 star rating.,pitch,2
+1766918010.1643503,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,2
+1766918086.8089902,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 3.5 star rating.,pitch,1
+1766918086.9685307,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766918087.7944224,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 3.5 star rating.,pitch,2
+1766918087.9725804,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,2
+1766918113.5361845,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 3.5 star rating.,pitch,1
+1766918113.9066312,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766918114.5164218,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 3.5 star rating.,pitch,2
+1766918114.824827,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,2
+1766918135.2965875,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.7 star rating.,pitch,1
+1766918135.4464035,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766918136.2866018,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.7 star rating.,pitch,2
+1766918136.4287045,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,2
+1766918165.284512,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.8 star rating.,pitch,1
+1766918165.438486,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766918200.4802806,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 3.8 star rating.,pitch,1
+1766918200.6066737,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766918201.4541569,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 3.8 star rating.,pitch,2
+1766918201.6396608,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,2
+1766918222.1874015,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 3.9 star rating.,pitch,1
+1766918222.336925,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766918223.1202514,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 3.9 star rating.,pitch,2
+1766918223.2756264,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,2
+1766918381.8999712,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 3.9 star rating.,pitch,1
+1766918382.0616374,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766918382.859723,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 3.9 star rating.,pitch,2
+1766918382.9911504,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,2
+1766918501.0017123,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.4 star rating.,pitch,1
+1766918501.1431966,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,1
+1766918501.9751558,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,This for Samsung Galaxy Watch 7/4/5/6 Strap 40mm 44mm/5 Pro 45mm ... (Price ~₹1470 - verify) (Price varies - check link) is a top pick at ₹1470.0 on amazon with a 4.4 star rating.,pitch,2
+1766918502.1086993,https://www.amazon.in/Samsung-Galaxy-Classic-Silicone-Replacement/dp/B0D4TNYND7,0,,response,2
+1766918707.068324,https://www.amazon.in/Samsung-Galaxy-Classic-Adjustable-Replacement/dp/B0BRTMZTRC,0,This 20mm Nylon Watch Band for Samsung Galaxy Watch 4 40mm ... is a top pick at ₹267.0 on amazon with a 4.3 star rating.,pitch,1
+1766918707.370968,https://www.amazon.in/Samsung-Galaxy-Classic-Adjustable-Replacement/dp/B0BRTMZTRC,0,,response,1
+1766918708.0149353,https://www.amazon.in/Samsung-Galaxy-Classic-Adjustable-Replacement/dp/B0BRTMZTRC,0,This 20mm Nylon Watch Band for Samsung Galaxy Watch 4 40mm ... is a top pick at ₹267.0 on amazon with a 4.3 star rating.,pitch,2
+1766918708.3201342,https://www.amazon.in/Samsung-Galaxy-Classic-Adjustable-Replacement/dp/B0BRTMZTRC,0,,response,2
+1766918924.1729755,https://www.amazon.in/Samsung-Galaxy-Classic-Adjustable-Replacement/dp/B0BRTMZTRC,0,This 20mm Nylon Watch Band for Samsung Galaxy Watch 4 40mm ... is a top pick at ₹267.0 on amazon with a 4.3 star rating.,pitch,1
+1766918924.3161693,https://www.amazon.in/Samsung-Galaxy-Classic-Adjustable-Replacement/dp/B0BRTMZTRC,0,,response,1
+1766918925.1165116,https://www.amazon.in/Samsung-Galaxy-Classic-Adjustable-Replacement/dp/B0BRTMZTRC,0,This 20mm Nylon Watch Band for Samsung Galaxy Watch 4 40mm ... is a top pick at ₹267.0 on amazon with a 4.3 star rating.,pitch,2
+1766918925.2800546,https://www.amazon.in/Samsung-Galaxy-Classic-Adjustable-Replacement/dp/B0BRTMZTRC,0,,response,2
+1766919071.4460645,https://www.amazon.in/Samsung-Hybrid-Leather-SHR89-SHR89LWEGUJ/dp/B0D53NPQJW,0,This Samsung Electronics Hybrid Leather Silicone Watch Band Strap ... is a top pick at ₹468.0 on amazon with a 4.1 star rating.,pitch,1
+1766919071.673022,https://www.amazon.in/Samsung-Hybrid-Leather-SHR89-SHR89LWEGUJ/dp/B0D53NPQJW,0,,response,1
+1766919072.4087858,https://www.amazon.in/Samsung-Hybrid-Leather-SHR89-SHR89LWEGUJ/dp/B0D53NPQJW,0,This Samsung Electronics Hybrid Leather Silicone Watch Band Strap ... is a top pick at ₹468.0 on amazon with a 4.1 star rating.,pitch,2
+1766919072.595085,https://www.amazon.in/Samsung-Hybrid-Leather-SHR89-SHR89LWEGUJ/dp/B0D53NPQJW,0,,response,2
+1766922460.1538348,https://www.amazon.in/Like-Star-20MM-Adjustable-Compatible/dp/B0CW1R77RH/ref=sr_1_1,0,This 20MM Adjustable Soft Silicone Strap with Folding Magnetic Lock Compatible With Samsung Galaxy Watch  is a top pick at ₹230.0 on amazon with a 4.2 star rating.,pitch,1
+1766922460.314549,https://www.amazon.in/Like-Star-20MM-Adjustable-Compatible/dp/B0CW1R77RH/ref=sr_1_1,0,,response,1
+1766923189.252683,https://www.amazon.in/sspa/click,0,"Stop playing; start dominating with the HP Omen, featuring an AMD Ryzen 9, 8GB RTX 5070, and a blistering 165Hz 2K display engineered to obliterate the competition.",pitch,1
+1766923189.3997517,https://www.amazon.in/sspa/click,0,,response,1
+1766923190.869169,https://www.amazon.in/sspa/click,0,"Dominate every game and crush your competition with the HP Omen, packing a beastly Ryzen 9 and RTX 5070, all for an unbeatable price that makes other rigs weep!",pitch,2
+1766923191.0341651,https://www.amazon.in/sspa/click,0,,response,2
+1766923198.6712735,https://www.amazon.in/HP-9-8945HS-Upgrade-300nits-fb3025AX/dp/B0DTJ3PX6T/ref=sr_1_3,0,"For just ₹99,990, the HP Victus delivers an incredible gaming core with an AMD Ryzen 9 and RTX 4060, offering a solid 16GB RAM that's perfectly poised for future upgrades as your demands grow.",pitch,3
+1766923198.8273408,https://www.amazon.in/HP-9-8945HS-Upgrade-300nits-fb3025AX/dp/B0DTJ3PX6T/ref=sr_1_3,0,,response,3
+1766923209.1515388,https://www.amazon.in/HP-9-8945HS-Upgrade-300nits-fb3025AX/dp/B0DTJ3PX6T/ref=sr_1_3,0,"""Finding the perfect balance, the HP Victus lets you compromise on budget, not on power, offering a formidable Ryzen 9 and RTX 4060 gaming setup for an incredible ₹99,990.""",pitch,4
+1766923209.3190813,https://www.amazon.in/HP-9-8945HS-Upgrade-300nits-fb3025AX/dp/B0DTJ3PX6T/ref=sr_1_3,0,,response,4
+1766923219.214371,https://www.amazon.in/ASUS-15-6-inch-GeForce-Graphite-FA506NCR-HN054W/dp/B0D5DFR78J/ref=sr_1_6,0,"Secure the powerful ASUS TUF Gaming A15 with its Ryzen 7 processor and RTX 3050 GPU for an unbeatable final price of ₹64,990 and elevate your gaming experience today.",pitch,5
+1766923219.3590071,https://www.amazon.in/ASUS-15-6-inch-GeForce-Graphite-FA506NCR-HN054W/dp/B0D5DFR78J/ref=sr_1_6,0,,response,5
+1766923748.323189,https://www.amazon.in/Spigen-Rugged-Compatible-Galaxy-Classic/dp/B09993R3YT/ref=sr_1_5,0,Stop babying your premium watch; this Spigen Rugged Armor Pro is the ultimate upgrade it *demands* for unyielding protection and undeniable style.,pitch,1
+1766923748.4878757,https://www.amazon.in/Spigen-Rugged-Compatible-Galaxy-Classic/dp/B09993R3YT/ref=sr_1_5,0,,response,1
+1766923749.7952213,https://www.amazon.in/Spigen-Rugged-Compatible-Galaxy-Classic/dp/B09993R3YT/ref=sr_1_5,0,"Stop babying your Samsung Galaxy Watch 4 Classic – this Spigen Rugged Armor Pro in Charcoal Gray is the ultimate defense you need, and it's just ₹1614 on Amazon, rated 4.2/5, so grab it before it's gone!",pitch,2
+1766923749.9417937,https://www.amazon.in/Spigen-Rugged-Compatible-Galaxy-Classic/dp/B09993R3YT/ref=sr_1_5,0,,response,2
+1766923755.553191,https://www.amazon.in/VEMIGON-Compatible-Samsung-Silicone-Replacement/dp/B0CYQ5RLLZ/ref=sr_1_2,0,"While it might seem like just an accessory, the VEMIGON Rugged No Gap Strap is the essential upgrade for your Galaxy Watch, offering robust protection and a seamless, integrated look for just ₹468.",pitch,3
+1766923755.7065156,https://www.amazon.in/VEMIGON-Compatible-Samsung-Silicone-Replacement/dp/B0CYQ5RLLZ/ref=sr_1_2,0,,response,3
+1766923760.7867365,https://www.amazon.in/VEMIGON-Compatible-Samsung-Silicone-Replacement/dp/B0CYQ5RLLZ/ref=sr_1_2,0,"While it might prioritize unwavering protection over delicate aesthetics, the VEMIGON Rugged No Gap Strap ensures your Samsung Galaxy Watch always looks perfectly integrated and ready for anything.",pitch,4
+1766923760.9414313,https://www.amazon.in/VEMIGON-Compatible-Samsung-Silicone-Replacement/dp/B0CYQ5RLLZ/ref=sr_1_2,0,,response,4
+1766923766.712757,https://www.amazon.in/Like-Star-20MM-Adjustable-Compatible/dp/B0CW1R77RH/ref=sr_1_1,0,"This is your definitive chance to secure the highly-rated (4.2/5!) adjustable soft silicone strap with a folding magnetic lock, offering unparalleled comfort and secure style for your Samsung Galaxy Watch, at a final offer of just ₹230 on Amazon.",pitch,5
+1766923766.8586996,https://www.amazon.in/Like-Star-20MM-Adjustable-Compatible/dp/B0CW1R77RH/ref=sr_1_1,0,,response,5
+1766924456.020266,https://www.amazon.in/Lenovo-i7-13650HX-Refresh-Windows-83DV018LIN/dp/B0FMR1MLTC/ref=sr_1_4,0,**Aura:** Forget compromise; the Lenovo LOQ with its i7-13650HX and RTX 4060 is your non-negotiable path to ultimate gaming dominance for ₹104913.0.,pitch,1
+1766924456.1730692,https://www.amazon.in/Lenovo-i7-13650HX-Refresh-Windows-83DV018LIN/dp/B0FMR1MLTC/ref=sr_1_4,0,,response,1
+1766924457.5698733,https://www.amazon.in/Lenovo-i7-13650HX-Refresh-Windows-83DV018LIN/dp/B0FMR1MLTC/ref=sr_1_4,0,"Unleash peak gaming performance with the Lenovo LOQ, featuring a powerful i7-13650HX and RTX 4060, all for an unbelievable ₹104,913 on Amazon – don't miss out!",pitch,2
+1766924457.7204447,https://www.amazon.in/Lenovo-i7-13650HX-Refresh-Windows-83DV018LIN/dp/B0FMR1MLTC/ref=sr_1_4,0,,response,2
+1766924468.5308418,https://www.amazon.in/ASUS-7445HS-4050-6GB-Windows-FA607NUG-RL189WS/dp/B0FM38SKN8/ref=sr_1_5,0,"Caught between saving money and demanding serious gaming power, the ASUS TUF A16 offers the optimal compromise, delivering robust performance and future-ready specs at a price that leaves no doubt you've made the smartest choice.",pitch,3
+1766924468.6714408,https://www.amazon.in/ASUS-7445HS-4050-6GB-Windows-FA607NUG-RL189WS/dp/B0FM38SKN8/ref=sr_1_5,0,,response,3
+1766924469.984841,https://www.amazon.in/ASUS-7445HS-4050-6GB-Windows-FA607NUG-RL189WS/dp/B0FM38SKN8/ref=sr_1_5,0,"For just ₹89990, the ASUS TUF A16 (2025) offers a powerful AMD Ryzen 7 7445HS processor and an RTX 4050 GPU for a stellar gaming experience, making it a strong contender for your next upgrade.",pitch,4
+1766924470.1252682,https://www.amazon.in/ASUS-7445HS-4050-6GB-Windows-FA607NUG-RL189WS/dp/B0FM38SKN8/ref=sr_1_5,0,,response,4
+1766924475.928743,https://www.amazon.in/sspa/click,0,"Seize the final chance to power your productivity with the highly-rated Lenovo V15 Ryzen 7, complete with MS Office, at the unbeatable price of just ₹46999.",pitch,5
+1766924476.0782592,https://www.amazon.in/sspa/click,0,,response,5
+1766924711.6075957,https://www.amazon.in/HP-Gaming-i7-13700HX-NVIDIA%C2%AE-GeForce/dp/B0CCY1TL5P/ref=sr_1_2,0,"Aura here, and if you're not playing on the HP OMEN 13th Gen Intel Core i7-13700HX, you're not just losing, you're *choosing* to lose; grab your unfair advantage now.",pitch,1
+1766924711.77181,https://www.amazon.in/HP-Gaming-i7-13700HX-NVIDIA%C2%AE-GeForce/dp/B0CCY1TL5P/ref=sr_1_2,0,,response,1
+1766924713.0441751,https://www.amazon.in/HP-Gaming-i7-13700HX-NVIDIA%C2%AE-GeForce/dp/B0CCY1TL5P/ref=sr_1_2,0,"Unleash ultimate gaming dominance with the HP OMEN's 13th Gen Intel Core i7-13700HX and a stunning 16.1"" FHD display, all yours for ₹153,999.0 – before your rivals do.",pitch,2
+1766924713.1942174,https://www.amazon.in/HP-Gaming-i7-13700HX-NVIDIA%C2%AE-GeForce/dp/B0CCY1TL5P/ref=sr_1_2,0,,response,2
+1766924725.3776867,https://www.amazon.in/Lenovo-i7-14700HX-300Nits-Graphics-83DV00BEIN/dp/B0CX8SF49C/ref=sr_1_3,0,"While it's a significant investment, the Lenovo LOQ perfectly compromises by offering serious 144Hz gaming power and a top-tier i7 processor without the prohibitive cost of an ultra-flagship model.",pitch,3
+1766924725.528506,https://www.amazon.in/Lenovo-i7-14700HX-300Nits-Graphics-83DV00BEIN/dp/B0CX8SF49C/ref=sr_1_3,0,,response,3
+1766924732.5442936,https://www.amazon.in/Lenovo-i7-14700HX-300Nits-Graphics-83DV00BEIN/dp/B0CX8SF49C/ref=sr_1_3,0,"While the ₹130,500 price is a serious consideration, the Lenovo LOQ's blazing i7-14700HX processor and smooth 144Hz display deliver uncompromising gaming power that justifies every rupee.",pitch,4
+1766924732.7110555,https://www.amazon.in/Lenovo-i7-14700HX-300Nits-Graphics-83DV00BEIN/dp/B0CX8SF49C/ref=sr_1_3,0,,response,4
+1766924740.093841,https://www.amazon.in/HP-9-8945HS-Upgrade-300nits-fb3025AX/dp/B0DTJ3PX6T/ref=sr_1_1,0,"For just ₹99990, unlock unparalleled gaming and creative potential with the highly-rated HP Victus, boasting a Ryzen 9 and RTX 4060, offering truly unmatched value on Amazon.",pitch,5
+1766924740.2433405,https://www.amazon.in/HP-9-8945HS-Upgrade-300nits-fb3025AX/dp/B0DTJ3PX6T/ref=sr_1_1,0,,response,5
+1766924960.6908407,https://www.amazon.in/HP-Gaming-i7-13700HX-NVIDIA%C2%AE-GeForce/dp/B0CCY1TL5P/ref=sr_1_2,0,"**Aura:** Your opponents aren't ready for the raw power of the HP OMEN 13th Gen Intel Core i7-13700HX, designed to absolutely decimate the competition—grab your unfair advantage now for ₹153999.",pitch,1
+1766924960.8345325,https://www.amazon.in/HP-Gaming-i7-13700HX-NVIDIA%C2%AE-GeForce/dp/B0CCY1TL5P/ref=sr_1_2,0,,response,1
+1766924966.429234,https://www.amazon.in/HP-Gaming-i7-13700HX-NVIDIA%C2%AE-GeForce/dp/B0CCY1TL5P/ref=sr_1_2,0,"Your current setup is a bottleneck; unleash the raw, unyielding power of the HP OMEN 13th Gen i7-13700HX and obliterate the competition.",pitch,2
+1766924966.578644,https://www.amazon.in/HP-Gaming-i7-13700HX-NVIDIA%C2%AE-GeForce/dp/B0CCY1TL5P/ref=sr_1_2,0,,response,2
+1766924974.8921251,https://www.amazon.in/Lenovo-i7-14700HX-300Nits-Graphics-83DV00BEIN/dp/B0CX8SF49C/ref=sr_1_3,0,"The Lenovo LOQ offers a brilliant compromise, delivering formidable i7-14700HX power and a smooth 144Hz display for exceptional gameplay, proving you don't need the absolute top-tier price tag for a truly immersive experience.",pitch,3
+1766924975.0419927,https://www.amazon.in/Lenovo-i7-14700HX-300Nits-Graphics-83DV00BEIN/dp/B0CX8SF49C/ref=sr_1_3,0,,response,3
+1766924984.1812336,https://www.amazon.in/Lenovo-i7-14700HX-300Nits-Graphics-83DV00BEIN/dp/B0CX8SF49C/ref=sr_1_3,0,"While a significant investment, this Lenovo LOQ's i7-14700HX processor, vibrant 144Hz display, and ample 1TB SSD mean you're making absolutely no compromises on a truly elite gaming experience.",pitch,4
+1766924984.3323073,https://www.amazon.in/Lenovo-i7-14700HX-300Nits-Graphics-83DV00BEIN/dp/B0CX8SF49C/ref=sr_1_3,0,,response,4
+1766924985.5516677,https://www.amazon.in/HP-9-8945HS-Upgrade-300nits-fb3025AX/dp/B0DTJ3PX6T/ref=sr_1_1,0,"**Aura's Final Offer:** Unleash your gaming potential and conquer any task with the blazing-fast HP Victus, boasting an AMD Ryzen 9, RTX 4060, and a stunning 144Hz display, all for an unbeatable ₹99,990 on Amazon!",pitch,5
+1766924985.693045,https://www.amazon.in/HP-9-8945HS-Upgrade-300nits-fb3025AX/dp/B0DTJ3PX6T/ref=sr_1_1,0,,response,5
