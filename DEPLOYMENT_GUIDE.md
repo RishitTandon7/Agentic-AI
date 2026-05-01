@@ -59,9 +59,26 @@ If you prefer a raw Linux server (Ubuntu 22.04+):
    docker run -d -p 80:5001 --env-file .env -v aura_data:/app/data --name aura-container aura-app
    ```
 
-## 4. Addressing Local LLMs (Ollama) in Production
+## 4. How to Use Local LLMs (Ollama) in Production
 
-The current backend is configured to use the "Deterministic Pipeline" first, then fall back to "Local Llama 3.2" via `ollama`, and finally to "Gemini 1.5 Flash".
+Because Ollama runs large AI models (like Llama 3.2), it requires significant compute power (specifically GPUs or high-end CPUs). Standard, cheap cloud tiers (like Render or Railway basic plans) will likely crash if you try to run Ollama directly on them.
 
-*   **Cloud Deployments:** Standard tiers on Render or Railway **do not have GPUs**. If `ollama` tries to run on a standard cloud CPU, it will be extremely slow or crash.
-*   **Recommendation:** The app's logic currently handles failures gracefully by falling back to Gemini (`Cloud Judge Error` -> `Heuristic`). So, it will work fine in the cloud purely off your Gemini API keys. If you *want* local Llama in production, you would need to deploy this Docker container to a GPU-enabled instance (like AWS EC2 g4dn, or RunPod).
+If you are hosting this project and want to use the Ollama fallback, you have **three main options**:
+
+### Option 1: GPU-Enabled Cloud Server (Full Control)
+Instead of using a simple service like Render, rent a GPU-enabled server (e.g., **AWS EC2 g4dn.xlarge**, **RunPod**, or **Paperspace**). 
+1. Install Docker on the server.
+2. Install Ollama directly on the server host and run `ollama pull llama3.2`.
+3. Deploy the app's Docker container on the same server, and it will communicate with the host's Ollama instance.
+
+### Option 2: The Hybrid Approach (Host App in Cloud, Ollama on your PC)
+You can deploy your Flask app cheaply on Render, but configure it to talk to the Ollama instance running on your powerful local home computer.
+1. Run Ollama on your home PC.
+2. Expose your local Ollama port (11434) to the internet using **Ngrok** (`ngrok http 11434`).
+3. In your Render app environment variables, point the `OLLAMA_HOST` variable to your Ngrok URL.
+*Note: Your home PC must be turned on for this to work.*
+
+### Option 3: Replace Ollama with a Fast API (Groq / Together AI)
+If you don't want to manage expensive GPUs, you can change the codebase to use **Groq** or **Together AI**. These providers host Llama 3.2 for you via an API, which is much cheaper and infinitely faster than running it yourself. You would simply replace the `ollama.chat()` calls in `judge_agent.py` with requests to the Groq API.
+
+*If you do nothing, the app will safely ignore Ollama failures in the cloud and automatically fall back to your Gemini API keys.*
