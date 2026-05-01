@@ -1,70 +1,50 @@
+"""
+ModelWarmer — pre-validates the best available model in the background
+so the first negotiation round starts instantly (no cold-start delay).
+Now delegates to ModelRotator for actual model selection.
+"""
 import threading
-import google.generativeai as genai
-import random
-from key_manager import KeyManager
+from model_rotator import ModelRotator
+
 
 class ModelWarmer:
     _instance = None
-    _verified_model = None
-    _verified_key = None
+    _ready = False
     _lock = threading.Lock()
     _is_checking = False
 
     def __new__(cls):
         if cls._instance is None:
-            cls._instance = super(ModelWarmer, cls).__new__(cls)
-            cls._instance.models_pool = [
-                "gemini-2.0-flash", "gemini-2.5-flash", 
-                "gemini-1.5-flash", "gemini-1.5-pro",
-                "gemma-2-9b-it" 
-            ]
+            cls._instance = super().__new__(cls)
         return cls._instance
 
     def start_check_async(self):
-        """Start finding a working model in background"""
-        if self._is_checking: return
-        t = threading.Thread(target=self._find_working_model)
-        t.daemon = True
+        """Start verifying the best model in background."""
+        if self._is_checking or self._ready:
+            return
+        t = threading.Thread(target=self._ping_best_model, daemon=True)
         t.start()
 
-    def _find_working_model(self):
+    def _ping_best_model(self):
         with self._lock:
             self._is_checking = True
-            
-        km = KeyManager()
-        print("🔥 Warmer: Checking for valid model/key...")
-        
-        # Try finding a working combination
-        # Limit total attempts to avoid infinite resource usage
-        attempts = 0
-        while attempts < 4:
-            attempts += 1
-            model = random.choice(self.models_pool)
-            key = km.get_current_key()
-            
-            try:
-                genai.configure(api_key=key)
-                m = genai.GenerativeModel(model)
-                # Quick ping
-                m.generate_content("Hi")
-                
-                # Success!
-                self._verified_model = model
-                self._verified_key = key
-                print(f"✅ Warmer: Found working model: {model} with key ...{key[-4:]}")
-                self._is_checking = False
-                return
-            except Exception as e:
-                # Rotate and try again
-                km.rotate_key()
-        
-        print("⚠️ Warmer: Could not verified model in background.")
-        self._is_checking = False
+        try:
+            rotator = ModelRotator()
+            model_id, model = rotator.get_best_model(task="negotiation")
+            model.generate_content("Say OK.")
+            self._ready = True
+            print(f"✅ Warmer: Best model ready → {model_id}")
+        except Exception as e:
+            print(f"⚠️  Warmer: ping failed ({e}) — rotator will handle on demand")
+        finally:
+            self._is_checking = False
 
     def get_verified_model(self):
-        """Return the pre-verified model if available, else None"""
-        return self._verified_model, self._verified_key
+        """
+        Legacy compatibility: return (None, None) — 
+        ModelRotator handles selection internally now.
+        """
+        return None, None
 
     def clear(self):
-        self._verified_model = None
-        self._verified_key = None
+        self._ready = False

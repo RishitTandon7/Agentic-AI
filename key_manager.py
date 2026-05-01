@@ -1,38 +1,47 @@
+"""
+KeyManager - legacy compatibility wrapper.
+New code should use ModelRotator directly.
+Still used by any code that calls km.get_current_key() / km.rotate_key().
+"""
 import os
 import itertools
 from dotenv import load_dotenv
 
 load_dotenv()
 
+
+def _load_all_keys() -> list:
+    keys = []
+    for i in range(1, 21):
+        k = os.getenv(f"GOOGLE_API_KEY_{i}")
+        if k and k.strip():
+            keys.append(k.strip())
+    if not keys:
+        legacy = os.getenv("GOOGLE_API_KEY")
+        if legacy:
+            keys.append(legacy.strip())
+    return keys
+
+
 class KeyManager:
     _instance = None
-    
+
     def __new__(cls):
         if cls._instance is None:
-            cls._instance = super(KeyManager, cls).__new__(cls)
-            # Load all keys
-            keys = []
-            if os.getenv("GOOGLE_API_KEY"): keys.append(os.getenv("GOOGLE_API_KEY"))
-            if os.getenv("GOOGLE_API_KEY_2"): keys.append(os.getenv("GOOGLE_API_KEY_2"))
-            
-            # Add the one provided by user just in case it wasn't in env yet or if we want to hardcode fallback
-            hardcoded_Key = "AIzaSyBbVaTnA00KD-qYGnTwlrv3NBnfO8myD1I" 
-            if hardcoded_Key not in keys: keys.append(hardcoded_Key)
-            
+            cls._instance = super().__new__(cls)
+            keys = _load_all_keys()
             cls._instance.keys = keys
             cls._instance.key_cycle = itertools.cycle(keys)
             cls._instance.current_key = next(cls._instance.key_cycle)
-            
+            print(f"[KeyManager] {len(keys)} keys loaded.")
         return cls._instance
 
-    def get_current_key(self):
+    def get_current_key(self) -> str:
         return self.current_key
-    
-    def rotate_key(self):
-        """Switch to next API key"""
+
+    def rotate_key(self) -> str:
         self.current_key = next(self.key_cycle)
-        # print(f"🔑 Rotated API Key to: ...{self.current_key[-6:]}") # Silence log to reduce noise
         return self.current_key
-    
-    def get_key_count(self):
+
+    def get_key_count(self) -> int:
         return len(self.keys)

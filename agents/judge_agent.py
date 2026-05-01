@@ -3,11 +3,11 @@ import json
 import re
 import os
 import ollama
-from key_manager import KeyManager
+from model_rotator import ModelRotator
 
 class JudgeAgent:
     def __init__(self):
-        self.km = KeyManager()
+        self.rotator = ModelRotator()
 
     def evaluate(self, product, user_query="", user_budget=0):
         res = self._evaluate_internal(product, user_query, user_budget)
@@ -128,14 +128,9 @@ class JudgeAgent:
             print(f"Local Llama Error: {e} -> Falling back to Cloud")
             pass 
 
-        # 2. Fallback to Gemini 1.5 Flash
+        # 2. Fallback to Cloud (via ModelRotator — uses best available model)
         try:
-            model_name = "gemini-1.5-flash"
-            genai.configure(api_key=self.km.get_current_key())
-            model = genai.GenerativeModel(model_name)
-            response = model.generate_content(prompt)
-            
-            text = response.text.strip()
+            text = self.rotator.generate(prompt, task="fast")
             text = re.sub(r'```json\s*|```', '', text).strip()
             data = json.loads(text)
             

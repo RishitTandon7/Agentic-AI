@@ -1,15 +1,10 @@
 import os
-import google.generativeai as genai
+from model_rotator import ModelRotator
 
 class BuyerAgent:
     def __init__(self, budget):
         self.budget = budget
-        self.api_key = os.getenv("GOOGLE_API_KEY")
-        if self.api_key:
-            genai.configure(api_key=self.api_key)
-            self.model = genai.GenerativeModel('gemini-2.0-flash')
-        else:
-            self.model = None
+        self.rotator = ModelRotator()
 
     def pick_best_value(self, products, query_context=""):
         if not products: return None, False
@@ -141,42 +136,40 @@ class BuyerAgent:
         # STUBBORNNESS: Ensure at least 3 rounds of dialogue
         should_switch = switch_score > 30 and round_num >= 3 
         
-        # GENERATE RESPONSE using AI (if available) or template
-        if use_ai and self.model:
+        # GENERATE RESPONSE using AI
+        if use_ai:
             try:
                 if should_switch:
+                    reasons_str = ', '.join(reasons_to_switch[:2]) or 'better overall value'
                     prompt = (
-                        f"You are a smart buyer considering two products:\n"
-                        f"SELLER'S OFFER: {seller_product['name']} - ₹{seller_price:,}, {seller_rating}★\n"
-                        f"YOUR CURRENT CHOICE: {my_pick['name']} - ₹{my_price:,}, {my_rating}★\n"
-                        f"Your budget: ₹{self.budget:,}\n\n"
-                        f"You've decided to ACCEPT the seller's product because: {', '.join(reasons_to_switch[:2])}.\n"
-                        f"Write a brief response (2 sentences) agreeing and explaining why you're convinced."
+                        f"You are a savvy buyer named Alex in a product negotiation.\n"
+                        f"Negotiation Round: {round_num}\n"
+                        f"SELLER'S OFFER: {seller_product['name']} — ₹{seller_price:,}, rated {seller_rating}★\n"
+                        f"YOUR CURRENT PICK: {my_pick['name']} — ₹{my_price:,}, rated {my_rating}★\n"
+                        f"Your budget: ₹{self.budget:,}\n"
+                        f"Why you're switching: {reasons_str}\n\n"
+                        f"Write a natural, conversational 2-sentence response ACCEPTING the seller's product.\n"
+                        f"Sound genuinely convinced. Mention the specific reason you're switching.\n"
+                        f"Do NOT use bullet points, markdown, or emojis. Just plain sentences."
                     )
                 else:
+                    reasons_str = ', '.join(reasons_to_stay[:2]) or 'it better fits my requirements'
                     prompt = (
-                        f"You are a smart buyer considering two products:\n"
-                        f"SELLER'S OFFER: {seller_product['name']} - ₹{seller_price:,}, {seller_rating}★\n"
-                        f"YOUR CHOICE: {my_pick['name']} - ₹{my_price:,}, {my_rating}★\n"
-                        f"Your budget: ₹{self.budget:,}\n\n"
-                        f"You've decided to REJECT the seller's offer because: {', '.join(reasons_to_stay[:2])}.\n"
-                        f"Write a brief response (2 sentences) politely declining and defending your choice."
+                        f"You are a savvy buyer named Alex in a product negotiation.\n"
+                        f"Negotiation Round: {round_num}\n"
+                        f"SELLER'S OFFER: {seller_product['name']} — ₹{seller_price:,}, rated {seller_rating}★\n"
+                        f"YOUR CURRENT PICK: {my_pick['name']} — ₹{my_price:,}, rated {my_rating}★\n"
+                        f"Your budget: ₹{self.budget:,}\n"
+                        f"Why you're staying: {reasons_str}\n\n"
+                        f"Write a natural, conversational 2-sentence response politely REJECTING the seller's offer.\n"
+                        f"Be specific — mention the product names and actual numbers.\n"
+                        f"Do NOT use bullet points, markdown, or emojis. Just plain sentences."
                     )
-                
-                from key_manager import KeyManager
-                km = KeyManager()
-                
-                for _ in range(2):
-                    try:
-                        genai.configure(api_key=km.get_current_key())
-                        model = genai.GenerativeModel('gemini-2.0-flash')
-                        response = model.generate_content(prompt)
-                        return response.text.strip(), should_switch
-                    except:
-                        km.rotate_key()
-                        continue
+
+                text = self.rotator.generate(prompt, task="negotiation")
+                return text, should_switch
             except Exception as e:
-                pass  # Fall through to template
+                print(f"⚠️  BuyerAgent AI failed: {e}")
         
         # FALLBACK TEMPLATE RESPONSES
         if should_switch:
