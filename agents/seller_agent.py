@@ -8,19 +8,14 @@ class SellerAgent:
         if self.api_key:
             genai.configure(api_key=self.api_key)
         
-        # ALL available models for quota rotation
+        # Available models for quota rotation (real, publicly accessible model IDs)
         self.models_pool = [
-            "gemini-2.5-flash",
-            "gemini-2.5-flash-lite",
-            "gemini-2.5-flash-tts",
-            "gemini-3-flash",
-            "gemini-robotics-er-1.5-preview",
-            "gemini-2.5-flash-native-audio-dialog",
-            "gemma-3-27b",
-            "gemma-3-12b",
-            "gemma-3-4b",
-            "gemma-3-2b",
-            "gemma-3-1b"
+            "gemini-2.0-flash",
+            "gemini-1.5-flash",
+            "gemini-1.5-pro",
+            "gemini-2.0-flash-lite",
+            "gemma-2-9b-it",
+            "gemma-2-2b-it",
         ]
 
     def select_product(self, products: List[Dict], round_num: int = 1):

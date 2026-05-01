@@ -138,7 +138,7 @@ def compute_component_scores(
 # FINAL SCORE AGGREGATION (DETERMINISTIC)
 # ============================================================================
 
-def aggregate_final_score(component_scores: Dict[str, float]) -> Dict[str, float]:
+def aggregate_final_score(component_scores: Dict[str, float], category: str = "Laptop") -> Dict[str, float]:
     """
     Aggregate component scores into final score and purchase probability.
     
@@ -147,6 +147,7 @@ def aggregate_final_score(component_scores: Dict[str, float]) -> Dict[str, float
     
     Args:
         component_scores: All component scores from compute_component_scores()
+        category: Product category (for weighting)
         
     Returns:
         Dictionary containing:
@@ -155,7 +156,7 @@ def aggregate_final_score(component_scores: Dict[str, float]) -> Dict[str, float
             "purchase_probability": float [0, 100]
         }
     """
-    final_score = compute_final_score(component_scores)
+    final_score = compute_final_score(component_scores, category)
     purchase_probability = compute_purchase_probability(final_score)
     
     return {
@@ -171,7 +172,8 @@ def aggregate_final_score(component_scores: Dict[str, float]) -> Dict[str, float
 def get_score_breakdown(
     signals: Dict[str, Any],
     component_scores: Dict[str, float],
-    final_result: Dict[str, float]
+    final_result: Dict[str, float],
+    category: str = "Laptop"
 ) -> Dict[str, Any]:
     """
     Generate a detailed breakdown of all scoring steps for transparency.
@@ -186,8 +188,16 @@ def get_score_breakdown(
     Returns:
         Complete scoring breakdown with all intermediate values
     """
-    from llm_judge_config import SPEC_WEIGHTS, FINAL_WEIGHTS
+    from llm_judge_config import SPEC_WEIGHTS, CATEGORY_WEIGHTS
     
+    # Map high-level categories to weights
+    if category in ["Earphones", "Hair dryer", "Headphones", "Mobile"]:
+        curr_weights = CATEGORY_WEIGHTS.get("Electronics")
+    elif category in ["Hair oil", "Bracelet", "Fry pan", "Lifestyle", "Fashion"]:
+        curr_weights = CATEGORY_WEIGHTS.get("Lifestyle")
+    else:
+        curr_weights = CATEGORY_WEIGHTS.get(category, CATEGORY_WEIGHTS["Laptop"])
+
     breakdown = {
         "extracted_signals": signals,
         "component_scores": component_scores,
@@ -203,13 +213,13 @@ def get_score_breakdown(
             "total": component_scores.get("specs", 0.0),
         },
         "final_aggregation": {
-            "weights": FINAL_WEIGHTS,
+            "weights": curr_weights,
             "weighted_components": {
-                "price": FINAL_WEIGHTS["price"] * component_scores.get("price", 0.0),
-                "specs": FINAL_WEIGHTS["specs"] * component_scores.get("specs", 0.0),
-                "brand": FINAL_WEIGHTS["brand"] * component_scores.get("brand", 0.0),
-                "reviews": FINAL_WEIGHTS["reviews"] * component_scores.get("reviews", 0.0),
-                "marketplace": FINAL_WEIGHTS["marketplace"] * component_scores.get("marketplace", 0.0),
+                "price": curr_weights["price"] * component_scores.get("price", 0.0),
+                "specs": curr_weights["specs"] * component_scores.get("specs", 0.0),
+                "brand": curr_weights["brand"] * component_scores.get("brand", 0.0),
+                "reviews": curr_weights["reviews"] * component_scores.get("reviews", 0.0),
+                "marketplace": curr_weights["marketplace"] * component_scores.get("marketplace", 0.0),
             },
             "total": final_result["final_score"],
         },

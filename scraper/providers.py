@@ -57,11 +57,11 @@ class ProgrammableSearchEngineScraper(ScraperProvider):
         start_time = time.time()
         
         # Write to log file since terminal prints don't show
-        with open('scraper_log.txt', 'w', encoding='utf-8') as f:
-            f.write(f"SEARCH STARTED: {query}\n")
-            f.write(f"Budget: {budget}\n")
-            f.write(f"Sources: {sources}\n")
-            f.write(f"use_selenium_prices: {self.use_selenium_prices}\n")
+        # with open('scraper_log.txt', 'w', encoding='utf-8') as f:
+        #     f.write(f"SEARCH STARTED: {query}\n")
+        #     f.write(f"Budget: {budget}\n")
+        #     f.write(f"Sources: {sources}\n")
+        #     f.write(f"use_selenium_prices: {self.use_selenium_prices}\n")
         
         print(f"Scraping using Programmable Search Engine for '{query}'...")
         

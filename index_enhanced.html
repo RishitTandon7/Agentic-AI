@@ -27,11 +27,27 @@
                     },
                     animation: {
                         'slideUp': 'slideUp 0.6s ease-out forwards',
+                        'fadeIn': 'fadeIn 0.5s ease-out forwards',
+                        'scaleIn': 'scaleIn 0.4s ease-out forwards',
+                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+                        'spin-slow': 'spin 3s linear infinite',
                     },
                     keyframes: {
                         slideUp: {
                             '0%': { transform: 'translateY(20px)', opacity: '0' },
                             '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' }
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(204, 255, 0, 0.3)' },
+                            '50%': { boxShadow: '0 0 40px rgba(204, 255, 0, 0.6)' }
                         }
                     }
                 }
@@ -75,7 +91,33 @@
             -webkit-box-shadow: 0 0 0px 1000px #0a0a0a inset;
         }
 
-        /* Loading Animation - Scanner Ring Pulse */
+        /* Enhanced Product Card Hover Effects */
+        .product-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Animated Gradient Border */
+        @keyframes border-glow {
+
+            0%,
+            100% {
+                border-color: rgba(204, 255, 0, 0.3);
+            }
+
+            50% {
+                border-color: rgba(204, 255, 0, 0.7);
+            }
+        }
+
+        .animated-border {
+            animation: border-glow 3s ease-in-out infinite;
+        }
+
+        /* Loading Animation Enhancements */
         .scanner-ring {
             animation: scan-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
@@ -94,37 +136,14 @@
             }
         }
 
-        .modal-backdrop {
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
+        /* Chat Message Animation */
+        .chat-message {
+            animation: slideUp 0.4s ease-out;
         }
 
-        .cat-chip {
-            padding: 0.375rem 1rem;
-            border-radius: 9999px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            color: #6b7280;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.2s;
-            user-select: none;
-        }
-
-        .cat-chip:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .cat-chip.active {
-            border-color: #ccff00;
-            background: #ccff00;
-            color: black;
-            box-shadow: 0 0 15px rgba(204, 255, 0, 0.2);
+        /* Round Badge Glow */
+        .round-badge {
+            animation: pulse-glow 2s ease-in-out infinite;
         }
     </style>
 </head>
@@ -228,7 +247,7 @@
                                 class="absolute top-4 left-5 text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2 group-focus-within/input:text-accent transition-colors">
                                 <i class="fas fa-tag"></i> Max
                             </label>
-                            <input type="number" id="budget" placeholder="₹"
+                            <input type="number" id="budget" placeholder="Rs."
                                 class="w-full h-24 pt-8 px-5 bg-transparent border-none outline-none text-xl font-medium placeholder-gray-600 text-white"
                                 required>
                         </div>
@@ -238,18 +257,6 @@
                             INITIATE
                             <i class="fas fa-arrow-right group-hover/btn:translate-x-1 transition-transform"></i>
                         </button>
-                    </div>
-
-                    <!-- CATEGORY CHIPS -->
-                    <div class="flex flex-wrap items-center gap-2 px-4 py-4 mt-1 border-b border-white/5">
-                        <div class="text-[10px] text-gray-500 font-mono uppercase tracking-widest mr-2">Category:</div>
-
-                        <div class="cat-chip active" onclick="setCategory(this, 'Laptop')">Laptop</div>
-                        <div class="cat-chip" onclick="setCategory(this, 'Earphones')">Earphones</div>
-                        <div class="cat-chip" onclick="setCategory(this, 'Hair dryer')">Hair dryer</div>
-                        <div class="cat-chip" onclick="setCategory(this, 'Fry pan')">Fry pan</div>
-                        <div class="cat-chip" onclick="setCategory(this, 'Hair oil')">Hair oil</div>
-                        <div class="cat-chip" onclick="setCategory(this, 'Bracelet')">Bracelet</div>
                     </div>
 
                     <!-- SOURCE TOGGLES -->
@@ -275,7 +282,7 @@
                     </div>
 
                     <div class="hidden md:flex items-center justify-between px-4 py-2 mt-2 border-t border-white/5">
-                        <span class="text-[10px] text-gray-500 font-mono">SYSTEM READY // V2.4.1</span>
+                        <span class="text-[10px] text-gray-500 font-mono">SYSTEM READY // V2.5.0</span>
                         <div class="flex gap-2 items-center">
                             <div class="h-[1px] w-12 bg-white/10"></div>
                             <div class="text-[10px] font-mono tracking-widest text-accent">AURA_CORE</div>
@@ -307,41 +314,64 @@
             </div>
 
             <!-- RESULTS SECTION -->
-            <div id="results-feed" class="hidden w-full max-w-5xl mt-12 pb-20 space-y-8">
+            <div id="results-feed" class="hidden w-full max-w-6xl mt-12 pb-20 space-y-8">
 
-                <!-- PRODUCT GRID -->
-                <div id="products-section" class="hidden">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="text-xs uppercase tracking-widest text-gray-500">📦 Products Found</div>
-                        <div id="product-count" class="text-xs text-accent font-mono">0 items</div>
+                <!-- ENHANCED PRODUCT GRID -->
+                <div id="products-section" class="hidden animate-fadeIn">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-box text-accent"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs uppercase tracking-widest text-gray-500">Products Found</div>
+                                <div id="product-count" class="text-xl font-bold text-white">0 items</div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <!-- Products will be injected here -->
                     </div>
                 </div>
 
                 <!-- NEGOTIATION CHAT -->
-                <div id="chat-section" class="hidden">
-                    <div class="text-xs uppercase tracking-widest text-gray-500 mb-4">💬 Negotiation Log</div>
+                <div id="chat-section" class="hidden animate-fadeIn">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-comments text-blue-400"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs uppercase tracking-widest text-gray-500">Live Negotiation</div>
+                            <div class="text-xl font-bold text-white">Autonomous Agents</div>
+                        </div>
+                    </div>
                     <div id="chat-container"
-                        class="bg-black/40 border border-white/10 rounded-2xl p-4 max-h-[500px] overflow-y-auto space-y-4">
+                        class="bg-black/40 border border-white/10 rounded-2xl p-6 max-h-[600px] overflow-y-auto space-y-4">
                         <!-- Chat messages will be injected here -->
                     </div>
                 </div>
 
-                <!-- JUDGE VERDICT -->
-                <div id="judge-section" class="hidden">
-                    <div class="text-xs uppercase tracking-widest text-gray-500 mb-4">⚖️ LLM Judge Verdict</div>
+                <!--JUDGE VERDICT -->
+                <div id="judge-section" class="hidden animate-fadeIn">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-gavel text-accent"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs uppercase tracking-widest text-gray-500">AI Analysis</div>
+                            <div class="text-xl font-bold text-white">LLM Judge Verdict</div>
+                        </div>
+                    </div>
                     <div id="judge-container"
-                        class="bg-gradient-to-br from-accent/10 to-transparent border border-accent/30 rounded-2xl p-6">
+                        class="bg-gradient-to-br from-accent/10 to-transparent border border-accent/30 rounded-2xl p-8">
                         <!-- Judge verdict will be injected here -->
                     </div>
                 </div>
 
                 <!-- FINAL DEAL -->
-                <div id="deal-section" class="hidden">
+                <div id="deal-section" class="hidden animate-scaleIn">
                     <div id="deal-container"
-                        class="bg-gradient-to-br from-white/5 to-transparent border border-white/20 rounded-2xl p-8 text-center">
+                        class="bg-gradient-to-br from-white/5 to-transparent border-2 border-accent/50 rounded-3xl p-12 text-center animated-border">
                         <!-- Final deal will be injected here -->
                     </div>
                 </div>
@@ -350,190 +380,22 @@
         </main>
     </div>
 
-    <!-- SCORING MODAL -->
-    <div id="score-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 modal-backdrop" onclick="toggleModal(false)"></div>
-        <div
-            class="relative bg-black/90 border border-white/10 w-full max-w-2xl rounded-3xl p-8 max-h-[90vh] overflow-y-auto animate-[slideUp_0.4s]">
-            <div class="flex items-center justify-between mb-8">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center text-accent">
-                        <i class="fas fa-calculator"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold">Scoring Engine V2.5</h2>
-                        <div class="text-[10px] text-gray-500 font-mono tracking-widest">IEEE A* ARTIFACT //
-                            DETERMINISTIC PIPELINE</div>
-                    </div>
-                </div>
-                <button onclick="toggleModal(false)"
-                    class="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div class="space-y-8">
-                <!-- MASTER FORMULA -->
-                <div>
-                    <div class="text-xs uppercase tracking-widest text-accent mb-4">Core Calculation Logic</div>
-                    <div class="space-y-4">
-                        <div
-                            class="bg-white/5 border border-white/10 rounded-2xl p-6 font-mono text-sm leading-relaxed text-blue-300">
-                            <div class="text-[10px] text-gray-500 mb-2 uppercase tracking-widest">Global Aggregation
-                            </div>
-                            Final_Score = 0.25(Price) + 0.30(Specs) + 0.20(Brand) + 0.15(Reviews) + 0.10(Market)
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div
-                                class="bg-white/5 border border-white/10 rounded-2xl p-4 font-mono text-[10px] leading-relaxed text-gray-400">
-                                <div class="text-accent mb-1 uppercase tracking-widest">Hardware (Specs)</div>
-                                S_specs = 0.3(CPU) + 0.3(GPU) + 0.2(RAM) + 0.1(Disk) + 0.1(Display)
-                            </div>
-                            <div
-                                class="bg-white/5 border border-white/10 rounded-2xl p-4 font-mono text-[10px] leading-relaxed text-gray-400">
-                                <div class="text-accent mb-1 uppercase tracking-widest">Price Value</div>
-                                Deviation (δ) = |Actual - Market| / Market<br>
-                                Score = 1.0 (δ < 5%) | 0.85 (δ < 10%) | 0.5 (δ> 20%)
-                            </div>
-                            <div
-                                class="bg-white/5 border border-white/10 rounded-2xl p-4 font-mono text-[10px] leading-relaxed text-gray-400">
-                                <div class="text-accent mb-1 uppercase tracking-widest">RAM Utility</div>
-                                Score = (RAM_gb - 4) / (64 - 4)<br>
-                                <span class="text-[8px] text-gray-600 italic">Min-Max Normalization (4GB-64GB)</span>
-                            </div>
-                            <div
-                                class="bg-white/5 border border-white/10 rounded-2xl p-4 font-mono text-[10px] leading-relaxed text-gray-400">
-                                <div class="text-accent mb-1 uppercase tracking-widest">Storage Utility</div>
-                                Score = (Disk_gb - 128) / (2048 - 128)<br>
-                                <span class="text-[8px] text-gray-600 italic">Reference: 128GB to 2TB SSD</span>
-                            </div>
-                            <div
-                                class="bg-white/5 border border-white/10 rounded-2xl p-4 font-mono text-[10px] leading-relaxed text-gray-400">
-                                <div class="text-accent mb-1 uppercase tracking-widest">Social Proof</div>
-                                Sentiment = (Pos / Total) * min(1, log10(N)/3)<br>
-                                <span class="text-[8px] text-gray-600 italic">N = Review Volume</span>
-                            </div>
-                            <div
-                                class="bg-white/5 border border-white/10 rounded-2xl p-4 font-mono text-[10px] leading-relaxed text-gray-400">
-                                <div class="text-accent mb-1 uppercase tracking-widest">Marketplace</div>
-                                Amazon/Flipkart = 0.95 | Other = 0.85<br>
-                                <span class="text-[8px] text-gray-600 italic">Based on Buyer Protection Policy</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- INDIVIDUAL SCORES -->
-                <div>
-                    <div class="text-xs uppercase tracking-widest text-accent mb-4">Component Breakdown</div>
-                    <div id="modal-scores" class="grid grid-cols-2 gap-4">
-                        <!-- Scores will be injected here -->
-                    </div>
-                </div>
-
-                <!-- MATRICES -->
-                <div>
-                    <div class="text-xs uppercase tracking-widest text-accent mb-4">Tier Matrices</div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-3 p-4 bg-white/5 border border-white/5 rounded-2xl">
-                            <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">CPU Tiers</div>
-                            <div class="flex flex-wrap gap-2 text-[10px]">
-                                <span
-                                    class="bg-green-500/10 text-green-400 px-2 py-1 rounded border border-green-500/20">S:
-                                    1.00</span>
-                                <span
-                                    class="bg-blue-500/10 text-blue-400 px-2 py-1 rounded border border-blue-500/20">A:
-                                    0.85</span>
-                                <span
-                                    class="bg-yellow-500/10 text-yellow-400 px-2 py-1 rounded border border-yellow-500/20">B:
-                                    0.70</span>
-                                <span
-                                    class="bg-orange-500/10 text-orange-400 px-2 py-1 rounded border border-orange-500/20">C:
-                                    0.50</span>
-                                <span class="bg-red-500/10 text-red-400 px-2 py-1 rounded border border-red-500/20">D:
-                                    0.30</span>
-                            </div>
-                        </div>
-                        <div class="space-y-3 p-4 bg-white/5 border border-white/5 rounded-2xl">
-                            <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">GPU Tiers</div>
-                            <div class="flex flex-wrap gap-2 text-[10px]">
-                                <span
-                                    class="bg-green-500/10 text-green-400 px-2 py-1 rounded border border-green-500/20">S:
-                                    1.00</span>
-                                <span
-                                    class="bg-blue-500/10 text-blue-400 px-2 py-1 rounded border border-blue-500/20">A:
-                                    0.90</span>
-                                <span
-                                    class="bg-yellow-500/10 text-yellow-400 px-2 py-1 rounded border border-yellow-500/20">B:
-                                    0.75</span>
-                                <span
-                                    class="bg-orange-500/10 text-orange-400 px-2 py-1 rounded border border-orange-500/20">Integrated:
-                                    0.20</span>
-                            </div>
-                        </div>
-                        <div class="space-y-3 p-4 bg-white/5 border border-white/5 rounded-2xl">
-                            <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Display</div>
-                            <div class="flex flex-wrap gap-2 text-[10px]">
-                                <span
-                                    class="bg-green-500/10 text-green-400 px-2 py-1 rounded border border-green-500/20">A
-                                    (4K/OLED): 1.00</span>
-                                <span class="bg-blue-500/10 text-blue-400 px-2 py-1 rounded border border-blue-500/20">B
-                                    (QHD/144Hz): 0.75</span>
-                                <span
-                                    class="bg-yellow-500/10 text-yellow-400 px-2 py-1 rounded border border-yellow-500/20">C
-                                    (FHD): 0.50</span>
-                            </div>
-                        </div>
-                        <div class="space-y-3 p-4 bg-white/5 border border-white/5 rounded-2xl">
-                            <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Brand Reliability
-                            </div>
-                            <div class="flex flex-wrap gap-2 text-[10px]">
-                                <span
-                                    class="bg-green-500/10 text-green-400 px-2 py-1 rounded border border-green-500/20">High:
-                                    1.00</span>
-                                <span
-                                    class="bg-blue-500/10 text-blue-400 px-2 py-1 rounded border border-blue-500/20">Medium:
-                                    0.70</span>
-                                <span class="bg-red-500/10 text-red-400 px-2 py-1 rounded border border-red-500/20">Low:
-                                    0.40</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         // --- SOURCE TOGGLE LOGIC ---
         const activeSources = new Set(['amazon', 'flipkart']);
-        let currentCategory = 'Laptop';
 
-        function setCategory(el, cat) {
-            document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
-            currentCategory = cat;
-
-            // Helpful pre-fills
-            const queryInput = document.getElementById('query');
-            if (queryInput.value === '' || queryInput.dataset.prefetched === 'true') {
-                queryInput.value = cat;
-                queryInput.dataset.prefetched = 'true';
-            }
-        }
+        const activeClasses = 'border-accent/50 bg-accent text-black shadow-[0_0_15px_rgba(204,255,0,0.3)]';
+        const inactiveClasses = 'border-white/10 bg-white/5 text-gray-400';
 
         function toggleSource(source) {
             const el = document.getElementById('src-' + source);
 
             if (activeSources.has(source)) {
                 activeSources.delete(source);
-                // Remove active, add inactive
                 el.classList.remove('border-accent/50', 'bg-accent', 'text-black', 'shadow-[0_0_15px_rgba(204,255,0,0.3)]');
                 el.classList.add('border-white/10', 'bg-white/5', 'text-gray-400');
             } else {
                 activeSources.add(source);
-                // Remove inactive, add active
                 el.classList.remove('border-white/10', 'bg-white/5', 'text-gray-400');
                 el.classList.add('border-accent/50', 'bg-accent', 'text-black', 'shadow-[0_0_15px_rgba(204,255,0,0.3)]');
             }
@@ -548,7 +410,7 @@
 
         let progress = 0;
         let interval = setInterval(() => {
-            progress += 5 + Math.random() * 8; // FAST: 5-13% per tick
+            progress += 5 + Math.random() * 8;
             if (progress > 100) progress = 100;
             progressText.innerText = Math.round(progress);
             progressBar.style.width = `${progress}%`;
@@ -559,9 +421,9 @@
                     loader.classList.add('loader-exit');
                     appContent.classList.remove('opacity-0');
                     setTimeout(() => loader.style.display = 'none', 600);
-                }, 200); // Reduced delay
+                }, 200);
             }
-        }, 50); // Slightly slower ticks but bigger jumps = faster overall
+        }, 50);
 
         // --- MOUSE SPOTLIGHT ---
         document.addEventListener('mousemove', (e) => {
@@ -641,28 +503,41 @@
                 const source = p.source || 'web';
                 const rating = p.rating || 4.0;
                 const url = p.url || '#';
+                const isBestValue = p.is_best_value || false;
 
                 const sourceColors = {
-                    'amazon': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-                    'flipkart': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-                    'myntra': 'bg-pink-500/20 text-pink-400 border-pink-500/30',
-                    'web': 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+                    'amazon': 'bg-orange-500/20 text-orange-400 border-orange-500/40',
+                    'flipkart': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40',
+                    'myntra': 'bg-pink-500/20 text-pink-400 border-pink-500/40',
+                    'web': 'bg-blue-500/20 text-blue-400 border-blue-500/40'
                 };
                 const sourceClass = sourceColors[source] || sourceColors['web'];
 
                 const card = document.createElement('a');
                 card.href = url;
                 card.target = '_blank';
-                card.className = 'block bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group';
+                card.className = `product-card block bg-gradient-to-br from-white/5 to-white/[0.02] border ${isBestValue ? 'border-accent/50 shadow-[0_0_30px_rgba(204,255,0,0.2)]' : 'border-white/10'} rounded-2xl p-6 hover:border-accent/30 transition-all duration-300 group relative overflow-hidden`;
+                card.style.animationDelay = `${i * 100}ms`;
+                card.classList.add('animate-scaleIn');
+
                 card.innerHTML = `
-                    <div class="flex items-start justify-between gap-2 mb-3">
-                        <span class="px-2 py-0.5 text-[10px] font-bold uppercase rounded border ${sourceClass}">${source}</span>
-                        <span class="text-xs text-gray-500">⭐ ${rating}</span>
+                    ${isBestValue ? '<div class="absolute top-3 right-3 w-8 h-8 bg-accent rounded-full flex items-center justify-center"><i class="fas fa-star text-black text-sm"></i></div>' : ''}
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <span class="px-3 py-1 text-[10px] font-bold uppercase rounded-full border ${sourceClass}">${source}</span>
+                        <div class="flex items-center gap-1">
+                            <i class="fas fa-star text-accent text-xs"></i>
+                            <span class="text-xs text-gray-400">${rating.toFixed(1)}</span>
+                        </div>
                     </div>
-                    <div class="text-sm text-white font-medium mb-2 line-clamp-2 group-hover:text-accent transition-colors">${name}</div>
-                    <div class="flex items-center justify-between">
-                        <div class="text-lg font-bold text-accent">₹${price.toLocaleString()}</div>
-                        <i class="fas fa-external-link-alt text-gray-500 group-hover:text-accent text-xs transition-colors"></i>
+                    <div class="text-base text-white font-medium mb-3 line-clamp-2 group-hover:text-accent transition-colors leading-snug">${name}</div>
+                    <div class="flex items-end justify-between mt-auto">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Price</div>
+                            <div class="text-2xl font-bold text-accent">Rs.${price.toLocaleString()}</div>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-white/5 group-hover:bg-accent/20 border border-white/10 group-hover:border-accent/50 flex items-center justify-center transition-all">
+                            <i class="fas fa-arrow-right text-gray-500 group-hover:text-accent text-sm transition-colors"></i>
+                        </div>
                     </div>
                 `;
                 productsGrid.appendChild(card);
@@ -673,34 +548,41 @@
             chatSection.classList.remove('hidden');
 
             const bubble = document.createElement('div');
+            bubble.className = 'chat-message';
 
             if (role === 'seller') {
-                bubble.className = 'flex justify-start';
+                bubble.className += ' flex justify-start';
                 bubble.innerHTML = `
-                    <div class="max-w-[80%] bg-orange-500/10 border border-orange-500/20 rounded-2xl rounded-tl-sm p-4">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="text-orange-400 text-xs font-bold">🏪 SELLER</span>
-                            ${round ? `<span class="text-[10px] text-gray-500">Round ${round}</span>` : ''}
+                    <div class="max-w-[80%] bg-gradient-to-br from-orange-500/10 to-orange-500/5 border border-orange-500/20 rounded-2xl rounded-tl-sm p-5">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-6 h-6 bg-orange-500/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-store text-orange-400 text-xs"></i>
+                            </div>
+                            <span class="text-orange-400 text-xs font-bold uppercase tracking-wide">Seller Agent</span>
+                            ${round ? `<span class="ml-auto px-2 py-0.5 bg-orange-500/20 rounded-full text-[10px] text-orange-300 font-mono">R${round}</span>` : ''}
                         </div>
-                        <div class="text-sm text-gray-300 leading-relaxed">${message}</div>
+                        <div class="text-sm text-gray-200 leading-relaxed">${message}</div>
                     </div>
                 `;
             } else if (role === 'buyer') {
-                bubble.className = 'flex justify-end';
+                bubble.className += ' flex justify-end';
                 bubble.innerHTML = `
-                    <div class="max-w-[80%] bg-blue-500/10 border border-blue-500/20 rounded-2xl rounded-tr-sm p-4">
-                        <div class="flex items-center justify-end gap-2 mb-2">
-                            ${round ? `<span class="text-[10px] text-gray-500">Round ${round}</span>` : ''}
-                            <span class="text-blue-400 text-xs font-bold">BUYER 💰</span>
+                    <div class="max-w-[80%] bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20 rounded-2xl rounded-tr-sm p-5">
+                        <div class="flex items-center justify-end gap-2 mb-3">
+                            ${round ? `<span class="mr-auto px-2 py-0.5 bg-blue-500/20 rounded-full text-[10px] text-blue-300 font-mono">R${round}</span>` : ''}
+                            <span class="text-blue-400 text-xs font-bold uppercase tracking-wide">Buyer Agent</span>
+                            <div class="w-6 h-6 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-blue-400 text-xs"></i>
+                            </div>
                         </div>
-                        <div class="text-sm text-gray-300 leading-relaxed text-right">${message}</div>
+                        <div class="text-sm text-gray-200 leading-relaxed text-right">${message}</div>
                     </div>
                 `;
             } else {
                 // System message
-                bubble.className = 'flex justify-center';
+                bubble.className += ' flex justify-center';
                 bubble.innerHTML = `
-                    <div class="px-4 py-2 bg-white/5 rounded-full text-xs text-gray-400 italic">${message}</div>
+                    <div class="px-4 py-2 bg-accent/10 border border-accent/30 rounded-full text-xs text-accent font-mono uppercase tracking-wide">${message}</div>
                 `;
             }
 
@@ -708,74 +590,8 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        let lastJudgeData = null;
-
-        function toggleModal(show) {
-            const modal = document.getElementById('score-modal');
-            if (show) {
-                modal.classList.remove('hidden');
-                populateModal();
-            } else {
-                modal.classList.add('hidden');
-            }
-        }
-
-        function populateModal() {
-            if (!lastJudgeData || !lastJudgeData.det_details) return;
-            const det = lastJudgeData.det_details;
-            const scores = det.component_scores || {};
-            const breakdown = det.breakdown || {};
-            const weights = (breakdown.final_aggregation && breakdown.final_aggregation.weights)
-                ? breakdown.final_aggregation.weights
-                : { price: 0.25, specs: 0.30, brand: 0.20, reviews: 0.15, marketplace: 0.10 };
-
-            const container = document.getElementById('modal-scores');
-            const category = det.signals.product_category || 'Laptop';
-
-            // Update modal title/text
-            document.querySelector('#score-modal h2').innerText = `Audit Node: ${category}`;
-
-            // Update weights in the UI formula display (optional but good for 'verify')
-            const formulaDisplay = document.querySelector('#score-modal .text-blue-300');
-            if (formulaDisplay) {
-                formulaDisplay.innerHTML = `
-                    <div class="text-[10px] text-gray-500 mb-2 uppercase tracking-widest">Global Aggregation</div>
-                    Score = ${weights.price}(Price) + ${weights.specs}(Specs) + ${weights.brand}(Brand) + ${weights.reviews}(Reviews) + ${weights.marketplace}(Market)
-                `;
-            }
-
-            const labels = {
-                'price': 'Pricing Strategy',
-                'specs': 'Hardware specs',
-                'brand': 'Brand Equity',
-                'reviews': 'Social Proof',
-                'marketplace': 'Market Reliability'
-            };
-
-            container.innerHTML = Object.entries(labels).map(([key, label]) => {
-                const val = scores[key] || 0;
-                const weight = weights[key] || 0;
-                const pct = Math.round(val * 100);
-                return `
-                    <div class="bg-white/5 rounded-xl p-4 border border-white/10 group hover:border-accent/30 transition-all">
-                        <div class="flex justify-between items-start mb-1">
-                             <div class="text-[10px] text-gray-500 uppercase font-bold">${label}</div>
-                             <div class="text-[9px] text-accent font-mono">w=${weight}</div>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div class="text-xl font-bold text-white">${pct}%</div>
-                            <div class="w-12 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                <div class="bg-accent h-full" style="width: ${pct}%"></div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
         function showJudge(judge) {
             if (!judge) return;
-            lastJudgeData = judge;
             judgeSection.classList.remove('hidden');
 
             const verdict = judge.verdict || 'UNKNOWN';
@@ -783,34 +599,30 @@
             const summary = judge.summary || judge.reasoning || judge.explanation || 'No analysis available.';
 
             const verdictColors = {
-                'EXCELLENT': 'text-green-400',
-                'GOOD': 'text-accent',
-                'FAIR': 'text-yellow-400',
-                'POOR': 'text-red-400'
+                'EXCELLENT': 'text-green-400 bg-green-500/20',
+                'GOOD': 'text-accent bg-accent/20',
+                'FAIR': 'text-yellow-400 bg-yellow-500/20',
+                'POOR': 'text-red-400 bg-red-500/20'
             };
-            const verdictClass = verdictColors[verdict.toUpperCase()] || 'text-white';
+            const verdictClass = verdictColors[verdict.toUpperCase()] || 'text-white bg-white/10';
 
             judgeContainer.innerHTML = `
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center text-2xl">⚖️</div>
-                        <div>
-                            <div class="text-xs text-gray-500 uppercase tracking-wider">LLM Judge Verdict</div>
-                            <div class="text-2xl font-black ${verdictClass}">${verdict}</div>
-                        </div>
-                    </div>
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
                     <div class="flex items-center gap-4">
-                        <button onclick="toggleModal(true)" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-accent/40 transition-all group">
-                            <i class="fas fa-info text-xs text-gray-500 group-hover:text-accent"></i>
-                        </button>
-                        <div class="text-right">
-                            <div class="text-xs text-gray-500">Score</div>
-                            <div class="text-3xl font-bold text-white">${score}<span class="text-lg text-gray-500">/10</span></div>
+                        <div class="w-16 h-16 rounded-2xl bg-accent/20 flex items-center justify-center text-3xl">
+                            <i class="fas fa-gavel text-accent"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-gray-500 uppercase tracking-wider mb-1">Judge Verdict</div>
+                            <div class="flex items-center gap-3">
+                                <div class="text-3xl font-black text-white">${verdict}</div>
+                                <div class="px-3 py-1 ${verdictClass} rounded-full text-xs font-bold">${score}/10</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="border-t border-white/10 pt-4 mt-4">
-                    <div class="text-xs text-gray-500 uppercase tracking-wider mb-2">Analysis</div>
+                <div class="border-t border-white/10 pt-6">
+                    <div class="text-xs text-gray-500 uppercase tracking-wider mb-3">Detailed Analysis</div>
                     <div class="text-sm text-gray-300 leading-relaxed">${summary}</div>
                 </div>
             `;
@@ -824,12 +636,20 @@
             const source = product.source || 'web';
 
             dealContainer.innerHTML = `
-                <div class="text-xs uppercase tracking-widest text-accent mb-4">✅ NEGOTIATION COMPLETE</div>
-                <div class="text-5xl md:text-6xl font-black text-white mb-2">₹${price.toLocaleString()}</div>
-                <div class="text-gray-400 text-sm mb-2">${name}</div>
-                <div class="text-xs text-gray-500 mb-6">from ${source.toUpperCase()}</div>
-                <a href="${link}" target="_blank" class="inline-block px-10 py-4 bg-accent text-black font-bold text-lg rounded-full hover:scale-105 transition-transform shadow-[0_0_40px_rgba(204,255,0,0.4)]">
-                    SECURE THIS DEAL <i class="fas fa-external-link-alt ml-2"></i>
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-accent/20 rounded-full mb-6">
+                    <i class="fas fa-check-circle text-accent"></i>
+                    <span class="text-xs uppercase tracking-widest text-accent font-bold">Negotiation Complete</span>
+                </div>
+                <div class="mb-4">
+                    <div class="text-xs text-gray-500 uppercase tracking-wider mb-2">Final Price</div>
+                    <div class="text-6xl md:text-7xl font-black text-white mb-2">Rs.${price.toLocaleString()}</div>
+                </div>
+                <div class="text-gray-300 text-lg mb-2 max-w-2xl mx-auto">${name}</div>
+                <div class="text-xs text-gray-500 mb-8">from <span class="text-accent uppercase">${source}</span></div>
+                <a href="${link}" target="_blank" class="inline-flex items-center gap-3 px-12 py-5 bg-accent text-black font-bold text-lg rounded-full hover:scale-105 transition-all shadow-[0_0_40px_rgba(204,255,0,0.4)] hover:shadow-[0_0_60px_rgba(204,255,0,0.6)]">
+                    <i class="fas fa-shopping-cart"></i>
+                    SECURE THIS DEAL
+                    <i class="fas fa-arrow-right"></i>
                 </a>
             `;
         }
@@ -855,7 +675,7 @@
                             const event = JSON.parse(line.slice(6));
 
                             if (event.type === 'init') {
-                                addChat('system', `Negotiation started. Buyer's pick: ${event.buyer_choice}`);
+                                addChat('system', `Buyer's pick: ${event.buyer_choice}`);
                             }
 
                             else if (event.type === 'message') {
@@ -863,7 +683,7 @@
                             }
 
                             else if (event.type === 'switch') {
-                                addChat('system', `🔄 Buyer convinced! Switching to: ${event.new_product}`);
+                                addChat('system', `Buyer convinced! Switching to: ${event.new_product}`);
                             }
 
                             else if (event.type === 'status') {
@@ -880,11 +700,11 @@
                                 // Show Final Deal
                                 showFinalDeal(fc, link);
 
-                                addChat('system', '✅ Negotiation complete!');
+                                addChat('system', 'Process complete!');
                             }
 
                             else if (event.type === 'error') {
-                                addChat('system', `❌ Error: ${event.message}`);
+                                addChat('system', `Error: ${event.message}`);
                             }
 
                         } catch (e) { console.error('Parse error:', e); }

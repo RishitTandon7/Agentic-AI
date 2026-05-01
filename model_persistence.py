@@ -1,7 +1,7 @@
 import json
 import os
 
-CACHE_FILE = "model_cache.json"
+CACHE_FILE = ".model_cache.json"
 
 def get_last_model_index():
     if not os.path.exists(CACHE_FILE):

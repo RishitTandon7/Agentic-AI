@@ -48,29 +48,88 @@ class DirectSearchScraper:
     # Thread-local persistence
     _thread_local = threading.local()
 
+    # Realistic user agents pool (Rotate to avoid fingerprinting)
+    USER_AGENTS = [
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15',
+    ]
+
     def _ensure_browser(self):
-        """Initialize browser for the current thread if needed"""
+        """Initialize browser for the current thread with STEALTH anti-detection"""
+        import random
+        
         if not hasattr(DirectSearchScraper._thread_local, 'playwright'):
-            print(f"🚀 Launching Headless Browser (Thread {threading.get_ident()})...")
+            print(f"🚀 Launching Stealth Browser (Thread {threading.get_ident()})...")
             p = sync_playwright().start()
-            # Run in headless mode for production (set to False for debugging)
+            
+            # STEALTH: Launch with anti-detection args
             b = p.chromium.launch(
-                headless=True,  # Changed to True - no browser window
-                args=['--no-sandbox', '--disable-setuid-sandbox']
+                headless=True,
+                args=[
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-blink-features=AutomationControlled',  # Hide automation
+                    '--disable-infobars',
+                    '--disable-dev-shm-usage',
+                    '--disable-gpu',
+                    '--window-size=1920,1080',
+                ]
             )
             DirectSearchScraper._thread_local.playwright = p
             DirectSearchScraper._thread_local.browser = b
         
         self.playwright = DirectSearchScraper._thread_local.playwright
         self.browser = DirectSearchScraper._thread_local.browser
+        
+        # STEALTH: Rotate user agent and set realistic context
+        ua = random.choice(self.USER_AGENTS)
         self.context = self.browser.new_context(
-            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            viewport={'width': 1920, 'height': 1080}
+            user_agent=ua,
+            viewport={'width': 1920, 'height': 1080},
+            locale='en-IN',
+            timezone_id='Asia/Kolkata',
+            # Stealth extras
+            java_script_enabled=True,
+            bypass_csp=True,
+            ignore_https_errors=True,
+            extra_http_headers={
+                'Accept-Language': 'en-IN,en;q=0.9,hi;q=0.8',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1',
+            }
         )
+        
+        # STEALTH: Inject anti-detection JavaScript into every new page
+        self.context.add_init_script("""
+            // Override navigator.webdriver (key detection flag)
+            Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+            
+            // Override navigator.plugins to look like a real browser
+            Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3, 4, 5] });
+            
+            // Override navigator.languages
+            Object.defineProperty(navigator, 'languages', { get: () => ['en-IN', 'en', 'hi'] });
+            
+            // Remove automation hints from chrome object
+            if (window.chrome) {
+                window.chrome.runtime = {};
+            }
+        """)
     
     def search_amazon(self, query: str, count: int = 5):
         """Search Amazon directly and get products with prices"""
+        import random
+        import time
+        
         self._ensure_browser()
+        
+        # STEALTH: Random delay to simulate human behavior (0.5 - 2 seconds)
+        time.sleep(random.uniform(0.5, 2.0))
         
         search_url = f"https://www.amazon.in/s?k={query.replace(' ', '+')}"
         page = self.context.new_page()
@@ -79,17 +138,27 @@ class DirectSearchScraper:
             page.goto(search_url, timeout=30000)
             
             # AMAZON CAPTCHA DETECTION
-            if "Enter the characters you see below" in page.content():
-                print("⚠️ AMAZON CAPTCHA DETECTED! Please solve it in the browser window...")
-                try:
-                    # Wait for results grid to appear
-                    page.wait_for_selector("div.s-main-slot", timeout=45000)
-                    print("✅ Amazon CAPTCHA Solved!")
-                except:
-                    print("❌ Amazon CAPTCHA Timed out.")
+            if "Enter the characters you see below" in page.content() or "captcha" in page.content().lower():
+                print("⚠️ AMAZON CAPTCHA DETECTED!")
+                print("   💡 TIP: The stealth mode is active but Amazon still blocked.")
+                print("   🔄 Retrying with fresh browser context...")
+                page.close()
+                
+                # Force new context with different user agent
+                self.context.close()
+                self._ensure_browser()
+                page = self.context.new_page()
+                time.sleep(random.uniform(1, 3))
+                page.goto(search_url, timeout=30000)
+                
+                # Check again
+                if "captcha" in page.content().lower():
+                    print("   ❌ CAPTCHA persists. Skipping Amazon for now.")
                     page.close()
                     return []
-
+                else:
+                    print("   ✅ Retry successful!")
+            
             page.wait_for_timeout(2000) # Fast wait
             
             soup = BeautifulSoup(page.content(), 'html.parser')
@@ -590,99 +659,230 @@ class DirectSearchScraper:
         match = re.search(r'(\d+(?:\.\d+)?)', text)
         return float(match.group(1)) if match else 0.0
 
-    def search_google_shopping(self, query: str, count: int = 5):
-        """Scrape Google Shopping directly (No API Key needed)"""
+    def search_google_shopping_amazon(self, query: str, count: int = 12):
+        """
+        Scrape Google Shopping and filter ONLY Amazon products.
+        This bypasses Amazon's CAPTCHA by using Google as intermediary.
+        """
+        print(f"🛒 Searching Google Shopping for Amazon products: {query}")
+        all_results = self.search_google_shopping(query, max_results=count*2)  # Get more to ensure we have enough after filtering
+        
+        # Filter for Amazon products only
+        amazon_results = []
+        for product in all_results:
+            url = product.get('url', '').lower()
+            source = product.get('source', '').lower()
+            
+            # Check if product is from Amazon
+            if 'amazon.in' in url or 'amazon.com' in url or 'amazon' in source:
+                product['source'] = 'amazon'  # Normalize source name
+                amazon_results.append(product)
+        
+        print(f"   ✅ Filtered {len(amazon_results)} Amazon products from {len(all_results)} total Google Shopping results")
+        
+        # Limit to requested count
+        return amazon_results[:count]
+    
+    def search_google_shopping(self, query: str, max_results: int = 12):
+        """
+        Enhanced Google Shopping scraper with better product extraction.
+        Returns products from ALL sources (Amazon, Flipkart, etc.)
+        """
         self._ensure_browser()
-        # Search specifically in Shopping tab
-        search_url = f"https://www.google.com/search?q={query.replace(' ', '+')}&tbm=shop&hl=en"
+        # Use Indian locale for better local results
+        search_url = f"https://www.google.com/search?q={query.replace(' ', '+')}&tbm=shop&hl=en-IN&gl=IN"
         
         page = self.context.new_page()
         try:
-            print(f"DEBUG: Visiting {search_url}")
+            print(f"   🌐 Visiting Google Shopping: {search_url[:80]}...")
             page.goto(search_url, timeout=30000)
             
-            # CAPTCHA DETECTION
-            # Google often redirects to 'Sorry...' page on automated traffic
-            if "Sorry" in page.title() or "CAPTCHA" in page.content() or "Unusual traffic" in page.content():
-                 print("⚠️ GOOGLE CAPTCHA DETECTED! ⚠️")
-                 print("👉 Please solve the CAPTCHA in the browser window manually!")
-                 print("⏳ Waiting 45 seconds for you to solve it...")
-                 try:
-                     # Wait for product grid to appear after solution
-                     page.wait_for_selector('.sh-dgr__content, .i0X6df, .sh-np__click-target', timeout=45000)
-                     print("✅ CAPTCHA Solved! Resuming scrape...")
-                 except:
-                     print("❌ CAPTCHA Timed out. Skipping Google Shopping.")
-                     page.close()
-                     return []
-
-            page.wait_for_timeout(3000) # Wait for skeleton to fill
+            # Handle consent popup (EU/India)
+            try:
+                accept_btn = page.query_selector('button:has-text("Accept all"), button:has-text("I agree")')
+                if accept_btn:
+                    accept_btn.click()
+                    page.wait_for_timeout(1000)
+            except:
+                pass
             
-            # JS Injection for Google Shopping
-            # Google classes are obfuscated (e.g. 'i0X6df'), but structure is fairly consistent
+            # CAPTCHA DETECTION
+            page_content = page.content()
+            if "Sorry" in page.title() or "captcha" in page_content.lower() or "unusual traffic" in page_content.lower():
+                print("   ⚠️ GOOGLE CAPTCHA DETECTED!")
+                print("   💡 TIP: Google Shopping is blocking automated access.")
+                print("   🔄 Trying with fresh context...")
+                
+                # Try one more time with fresh context
+                page.close()
+                self.context.close()
+                self._ensure_browser()
+                page = self.context.new_page()
+                
+                import random, time
+                time.sleep(random.uniform(2, 4))
+                
+                page.goto(search_url, timeout=30000)
+                
+                if "captcha" in page.content().lower():
+                    print("   ❌ CAPTCHA persists. Google Shopping unavailable.")
+                    page.close()
+                    raise Exception("Google Shopping CAPTCHA blocking - triggering API fallback")
+                else:
+                    print("   ✅ Retry successful!")
+
+            page.wait_for_timeout(3000)  # Wait for dynamic content
+            
+            # Enhanced JavaScript extraction with multiple selector strategies
             results = page.evaluate("""() => {
                 const items = [];
-                // Select generic product containers in grid/list
-                // .sh-dgr__content is common for grid items
-                // .i0X6df is common for list
-                const cards = document.querySelectorAll('.sh-dgr__content, .i0X6df, .sh-np__click-target');
                 
-                cards.forEach(card => {
-                    if (items.length >= 8) return;
+                // Try multiple selectors (Google changes these frequently)
+                let cards = document.querySelectorAll('.sh-dgr__gr-auto, div[data-docid]');
+                console.log('Strategy 1 - Found cards:', cards.length);
+                
+                if (cards.length === 0) {
+                    cards = document.querySelectorAll('.sh-dlr__content, .sh-dgr__content');
+                    console.log('Strategy 2 - Found cards:', cards.length);
+                }
+                
+                if (cards.length === 0) {
+                    // Fallback: Look for any div with product links
+                    cards = document.querySelectorAll('div:has(a[href*="/shopping/product"])');
+                    console.log('Strategy 3 - Found cards:', cards.length);
+                }
+                
+                cards.forEach((card, index) => {
+                    if (items.length >= 20) return;  // Get more results for filtering
                     
-                    // TITLE (h3 usually)
-                    let title = "Unknown";
-                    const tEl = card.querySelector('h3, .tAxDx');
-                    if (tEl) title = tEl.innerText;
-                    
-                    // PRICE
-                    let price = 0;
-                    // Find any text looking like a price
-                    const priceEl = card.querySelector('span.a8Pemb, .a8Pemb, .HRLxBb');
-                    if (priceEl) {
-                         const txt = priceEl.innerText;
-                         const clean = txt.replace(/[^\d.]/g, '');
-                         if (clean) price = parseFloat(clean);
-                    }
-                    
-                    // VENDOR (Simulated source detection)
-                    let source = 'web';
-                    const vendorEl = card.querySelector('.aULzUe, .IuHnof');
-                    if (vendorEl) source = vendorEl.innerText.toLowerCase().replace(' ', '');
-                    
-                    // LINK
-                    // Often inside a parent 'a' tag with href='/url?q=...'
-                    let link = '';
-                    const aEl = card.querySelector('a[href^="/url"], a[href^="http"]');
-                    if (aEl) {
-                        link = aEl.href;
-                        // Clean Google Redirects if possible, or just use as is
-                        if (link.includes('url?url=')) {
-                             link = decodeURIComponent(link.split('url=')[1].split('&')[0]);
+                    try {
+                        // Extract link (required)
+                        const linkEl = card.querySelector('a[href*="/shopping/product"], a[href*="/url?"]');
+                        if (!linkEl) return;
+                        
+                        let url = linkEl.href;
+                        
+                        // Decode Google redirect URLs
+                        if (url.includes('/url?url=')) {
+                            try {
+                                url = decodeURIComponent(url.split('url=')[1].split('&')[0]);
+                            } catch (e) {}
+                        } else if (url.includes('/url?q=')) {
+                            try {
+                                url = decodeURIComponent(url.split('q=')[1].split('&')[0]);
+                            } catch (e) {}
                         }
-                    }
-
-                    if (price > 100 && link) {
-                        items.push({
-                            name: title.trim(),
-                            price: price,
-                            url: link,
-                            source: source || 'google_shopping',
-                            rating: 4.0,
-                            reviews: 10
-                        });
+                        
+                        // Extract title
+                        const titleEl = card.querySelector('h3, h4, .tAxDx, [role="heading"]');
+                        const title = titleEl ? titleEl.innerText.trim() : 'Unknown Product';
+                        
+                        // Extract price (multiple strategies)
+                        let price = 0;
+                        const priceEl = card.querySelector('.a8Pemb, span[aria-label*="₹"], span[aria-label*="$"], [data-sh-pr]');
+                        
+                        if (priceEl) {
+                            const priceText = priceEl.innerText || priceEl.getAttribute('aria-label') || '';
+                            const priceMatch = priceText.match(/[₹$]?\s*([0-9,]+)(\.[0-9]{2})?/);
+                            if (priceMatch) {
+                                price = parseInt(priceMatch[1].replace(/,/g, ''));
+                            }
+                        }
+                        
+                        // If no price found, try data attributes
+                        if (price === 0) {
+                            const priceAttr = card.querySelector('[data-sh-pr], [data-price]');
+                            if (priceAttr) {
+                                const attrValue = priceAttr.getAttribute('data-sh-pr') || priceAttr.getAttribute('data-price');
+                                if (attrValue) {
+                                    price = parseInt(attrValue.replace(/[^0-9]/g, ''));
+                                }
+                            }
+                        }
+                        
+                        // Extract rating (if available)
+                        let rating = 4.0;
+                        const ratingEl = card.querySelector('[aria-label*="star"], .Rsc7Yb');
+                        if (ratingEl) {
+                            const ratingText = ratingEl.getAttribute('aria-label') || ratingEl.innerText;
+                            const ratingMatch = ratingText.match(/([0-9.]+)/);
+                            if (ratingMatch) {
+                                rating = parseFloat(ratingMatch[1]);
+                            }
+                        }
+                        
+                        // Detect source from URL or seller name
+                        let source = 'unknown';
+                        const sellerEl = card.querySelector('.aULzUe, .IuHnof, [data-merchant-name]');
+                        
+                        if (url.includes('amazon.in') || url.includes('amazon.com')) {
+                            source = 'amazon';
+                        } else if (url.includes('flipkart.com')) {
+                            source = 'flipkart';
+                        } else if (url.includes('myntra.com')) {
+                            source = 'myntra';
+                        } else if (url.includes('ajio.com')) {
+                            source = 'ajio';
+                        } else if (url.includes('croma.com')) {
+                            source = 'croma';
+                        } else if (url.includes('reliancedigital.in')) {
+                            source = 'reliance';
+                        } else if (sellerEl) {
+                            const sellerText = sellerEl.innerText.toLowerCase();
+                            if (sellerText.includes('amazon')) source = 'amazon';
+                            else if (sellerText.includes('flipkart')) source = 'flipkart';
+                            else if (sellerText.includes('myntra')) source = 'myntra';
+                            else source = sellerText.replace(/\s+/g, '_');
+                        }
+                        
+                        // Only add valid products
+                        if (price > 0 && title !== 'Unknown Product' && url.startsWith('http')) {
+                            items.push({
+                                name: title,
+                                price: price,
+                                url: url,
+                                source: source,
+                                rating: rating,
+                                reviews: 100
+                            });
+                            console.log(`Product ${index}: ${title} - ₹${price} (${source})`);
+                        }
+                    } catch (err) {
+                        console.error('Error processing card:', err);
                     }
                 });
+                
+                console.log('Total products extracted:', items.length);
                 return items;
             }""")
             
-            print(f"DEBUG: Google Shopping Extracted {len(results)} items")
+            print(f"   ✅ Google Shopping: Extracted {len(results)} products")
+            
+            # Show sample results
+            if results:
+                print(f"   📦 Sample products:")
+                for idx, r in enumerate(results[:3]):
+                    print(f"      {idx+1}. {r.get('name', 'N/A')[:50]} - ₹{r.get('price', 0)} ({r.get('source', 'unknown')})")
+            
             page.close()
-            return self._filter_results(results, query)
+            
+            # Apply standard filters
+            filtered = self._filter_results(results, query)
+            print(f"   📊 After filtering: {len(filtered)} relevant products")
+            
+            return filtered[:max_results]
             
         except Exception as e:
-            print(f"Google Shopping Error: {e}")
-            page.close()
+            # If it's a CAPTCHA exception, re-raise it so controller can trigger API fallback
+            if "CAPTCHA" in str(e) or "captcha" in str(e).lower():
+                print(f"   ❌ Google Shopping CAPTCHA Exception - re-raising for API fallback")
+                raise  # Re-raise the exception
+            
+            print(f"   ❌ Google Shopping Error: {e}")
+            import traceback
+            traceback.print_exc()
+            if 'page' in locals():
+                page.close()
             return []
 
     # Remove close() logic that kills the browser

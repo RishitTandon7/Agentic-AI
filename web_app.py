@@ -7,7 +7,10 @@ import traceback
 import json
 
 # Force unbuffered output
-sys.stdout.reconfigure(line_buffering=True)
+try:
+    sys.stdout.reconfigure(line_buffering=True)
+except AttributeError:
+    pass  # Not available in all environments
 
 app = Flask(__name__)
 load_dotenv()
@@ -23,12 +26,14 @@ def search_page():
 
 @app.route('/simple')
 def simple():
-    return send_file('simple_index.html')
+    # simple_index.html no longer exists; redirect to main page
+    from flask import redirect
+    return redirect('/')
 
 @app.route('/negotiate', methods=['POST'])
 def negotiate():
-    # Legacy endpoint wrapper
-    return negotiate_chat() 
+    # Legacy endpoint wrapper - delegates to the negotiate_chat endpoint
+    return negotiate_chat_endpoint()
 
 @app.route('/search', methods=['POST'])
 def search_products_endpoint():
@@ -117,4 +122,4 @@ def negotiate_stream_endpoint():
 if __name__ == '__main__':
     print("Starting AURA Negotiation Server...")
     print("Access at: http://localhost:5001")
-    app.run(host='0.0.0.0', port=5001, debug=False)
+    app.run(host='0.0.0.0', port=5001, debug=False, use_reloader=False)

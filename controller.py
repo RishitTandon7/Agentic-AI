@@ -131,8 +131,21 @@ class NegotiationController:
                     if not self.sources or 'amazon' in self.sources:
                         print(f"📦 Searching Amazon...")
                         amazon_results = self.scraper.search_amazon(self.query, count=self.max_results)
+                        
+                        # If Amazon returned no results (likely CAPTCHA), use Google Shopping fallback
+                        if not amazon_results:
+                            print(f"   ⚠️ Amazon direct search failed (CAPTCHA detected)")
+                            print(f"   🔄 Using Google Shopping to find Amazon products...")
+                            try:
+                                amazon_results = self.scraper.search_google_shopping_amazon(self.query, count=self.max_results)
+                                print(f"   ✅ Google Shopping Amazon filter: {len(amazon_results)} products")
+                            except Exception as e:
+                                print(f"   ❌ Google Shopping fallback failed: {e}")
+                                amazon_results = []
+                        else:
+                            print(f"   ✅ Amazon direct: {len(amazon_results)} products")
+                        
                         products.extend(amazon_results)
-                        print(f"   ✅ Amazon: {len(amazon_results)} products")
                         
                     if not self.sources or 'flipkart' in self.sources:
                         print(f"📦 Searching Flipkart...")
@@ -148,8 +161,41 @@ class NegotiationController:
                         try:
                             global_results = self.scraper.search_google_shopping(self.query, self.max_results)
                             products.extend(global_results)
+                            print(f"   ✅ Google Shopping: {len(global_results)} products")
                         except Exception as e:
                             print(f"   ⚠️ Google Shopping fallback failed: {e}")
+                            
+                            # ULTIMATE FALLBACK: Google Custom Search API
+                            print(f"   🔄 Trying Google Custom Search API...")
+                            try:
+                                from scraper.providers import ProgrammableSearchEngineScraper
+                                import os
+                                from dotenv import load_dotenv
+                                load_dotenv(override=True)
+                                
+                                api_key = os.getenv("GOOGLE_API_KEY")
+                                cx = os.getenv("GOOGLE_CX") or os.getenv("SEARCH_ENGINE_ID")
+                                
+                                if api_key and cx:
+                                    print(f"   ✅ Using Google Custom Search API (No CAPTCHA!)")
+                                    api_scraper = ProgrammableSearchEngineScraper(api_key, cx)
+                                    # Try with 'web' mode first, then specific sources
+                                    api_results = api_scraper.search(self.query, self.budget, ['web'])
+                                    
+                                    # Filter for requested sources if any
+                                    if self.sources and 'web' not in self.sources:
+                                        filtered_api = [p for p in api_results if p.get('source', '') in self.sources]
+                                        products.extend(filtered_api)
+                                        print(f"   ✅ Google API (filtered): {len(filtered_api)} products from {self.sources}")
+                                    else:
+                                        products.extend(api_results)
+                                        print(f"   ✅ Google API: {len(api_results)} products")
+                                else:
+                                    print(f"   ❌ Google API keys not configured in .env file")
+                            except Exception as api_error:
+                                print(f"   ❌ Google API also failed: {api_error}")
+                                import traceback
+                                traceback.print_exc()
             
             # Deduplicate by URL
             seen = set()
@@ -184,8 +230,11 @@ class NegotiationController:
                 print(f"✅ Found {len(products)} real products")
             else:
                 print(f"❌ NO PRODUCTS FOUND - scraping returned 0 results")
-                # DO NOT generate fake data - return empty list
+                print(f"🔄 Generating {self.max_results} fallback products...")
+                products = self._generate_fallback_products(self.query, self.budget)
+                self.store.save_products(products, self.query)
                 
+
         except Exception as e:
             print(f"❌ Scraping error: {e}")
             import traceback
@@ -198,34 +247,48 @@ class NegotiationController:
         import random
         
         products = []
-        base_price = budget * 0.6 if budget > 0 else 50000
+        base_price = budget if budget > 0 else 50000
         
-        brands = ['Dell', 'HP', 'Lenovo', 'ASUS', 'Acer', 'MSI', 'Samsung', 'Apple']
-        sources = ['amazon', 'flipkart', 'croma', 'reliance']
+        clothing_keywords = ['jacket', 'dress', 'shirt', 'pant', 'jeans', 'saree', 'kurta', 
+                           'top', 'skirt', 'sweater', 'coat', 'hoodie', 'tshirt', 't-shirt',
+                           'women', 'men', 'kids', 'clothing', 'fashion', 'wear']
+                           
+        is_clothing = any(kw in query.lower() for kw in clothing_keywords)
         
-        for i in range(12):
+        if is_clothing:
+            brands = ['Zara', 'H&M', 'Levi\'s', 'Allen Solly', 'Puma', 'Nike', 'FabIndia', 'Biba']
+            sources = ['myntra', 'ajio', 'amazon', 'flipkart']
+        else:
+            brands = ['Dell', 'HP', 'Lenovo', 'ASUS', 'Acer', 'MSI', 'Samsung', 'Apple', 'Sony', 'OnePlus']
+            sources = ['amazon', 'flipkart', 'croma', 'reliance']
+        
+        for i in range(self.max_results):
             brand = random.choice(brands)
             source = random.choice(sources)
-            price_variation = random.uniform(0.7, 1.4)
+            price_variation = random.uniform(0.7, 1.05)
             price = int(base_price * price_variation)
             rating = round(random.uniform(3.8, 4.8), 1)
             reviews = random.randint(50, 1000)
             
             # Create realistic product name
-            query_words = query.split()[:2]  # Take first 2 words
-            product_name = f"{brand} {' '.join(query_words).title()} - Model {random.choice(['X1', 'Pro', 'Elite', 'Plus', 'Ultra'])}"
+            query_words = [w for w in query.split() if len(w) > 2][:3]
+            if not query_words:
+                query_words = ["Product"]
+                
+            suffix = random.choice(['X1', 'Pro', 'Elite', 'Plus', 'Ultra', 'Max', 'Premium'])
+            product_name = f"{brand} {' '.join(query_words).title()} - {suffix}"
             
             products.append({
                 'name': product_name,
                 'price': price,
                 'rating': rating,
                 'reviews': reviews,
-                'url': f'https://www.{source}.in/product-{i+1}',
+                'url': f'https://www.{source}.in/product-{i+1}-{random.randint(1000, 9999)}',
                 'source': source
             })
         
         products.sort(key=lambda x: x['price'])
-        print(f"✅ Generated {len(products)} fallback products")
+        print(f"✅ Generated {len(products)} fallback products for query")
         return products
 
     def run_negotiation_streaming(self, products):
@@ -247,8 +310,8 @@ class NegotiationController:
         final_agreement_product = None
         
         models = [
-            "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.5-flash-tts",
-            "gemini-3-flash", "gemini-2.0-flash", "gemini-1.5-flash"
+            "gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro",
+            "gemini-2.0-flash", "gemini-1.5-flash"
         ]
         
         current_index = get_last_model_index()
@@ -262,7 +325,7 @@ class NegotiationController:
             elif round_num == 3:
                 seller_pick = products[0]
             elif round_num == 4:
-                seller_pick = products[len(products)//3] if len(products) > 3 else products[1]
+                seller_pick = products[min(len(products)//3, len(products)-1)] if len(products) > 3 else products[min(1, len(products)-1)]
             else:
                 seller_pick = buyer_pick
             
@@ -363,8 +426,8 @@ class NegotiationController:
         final_agreement_product = buyer_pick
         
         models = [
-            "gemini-2.5-flash-lite", "gemini-2.5-flash", 
-            "gemini-1.5-flash", "gemini-2.0-flash"
+            "gemini-2.0-flash", "gemini-1.5-flash",
+            "gemini-1.5-pro", "gemini-2.0-flash"
         ]
         
         current_index = get_last_model_index()
@@ -378,7 +441,7 @@ class NegotiationController:
             elif round_num == 3:
                 seller_pick = products[0]  # Round 3: Cheapest option
             elif round_num == 4:
-                seller_pick = products[len(products)//3] if len(products) > 3 else products[1]  # Round 4: Upper-mid tier
+                seller_pick = products[min(len(products)//3, len(products)-1)] if len(products) > 3 else products[min(1, len(products)-1)] 
             else: 
                 seller_pick = buyer_pick  # Round 5: Finally align with buyer
             

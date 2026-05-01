@@ -188,6 +188,34 @@ SPEC_WEIGHTS = {
     "display": 0.10,
 }
 
+# ============================================================================
+# CATEGORY-SPECIFIC WEIGHTING MATRICES
+# ============================================================================
+
+CATEGORY_WEIGHTS = {
+    "Laptop": {
+        "price": 0.25,
+        "specs": 0.35,  # Tech heavy
+        "brand": 0.20,
+        "reviews": 0.10,
+        "marketplace": 0.10,
+    },
+    "Electronics": {  # Earphones, Hair dryer
+        "price": 0.30,
+        "specs": 0.20,  # Medium tech
+        "brand": 0.20,
+        "reviews": 0.20,
+        "marketplace": 0.10,
+    },
+    "Lifestyle": {  # Hair oil, Bracelet, Fry pan
+        "price": 0.35,
+        "specs": 0.05,  # Basically irrelevant
+        "brand": 0.25,
+        "reviews": 0.25,
+        "marketplace": 0.10,
+    }
+}
+
 def compute_specification_score(component_scores: Dict[str, float]) -> float:
     """
     Aggregate component specification scores using fixed weights.
@@ -223,25 +251,36 @@ FINAL_WEIGHTS = {
     "marketplace": 0.10,
 }
 
-def compute_final_score(component_scores: Dict[str, float]) -> float:
+def compute_final_score(component_scores: Dict[str, float], category: str = "Laptop") -> float:
     """
-    Compute final aggregate score using master formula.
+    Compute final aggregate score using master formula with category-aware weights.
     
     Formula:
-        FinalScore = 0.25×Price + 0.30×Specs + 0.20×Brand + 0.15×Reviews + 0.10×Marketplace
+        FinalScore = Σ (Weight_i * Score_i)
     
     Args:
         component_scores: Dict containing all component scores
+        category: Product category for selecting weights
         
     Returns:
         Final score [0, 1]
     """
+    # Map high-level categories
+    weights = CATEGORY_WEIGHTS.get("Laptop") # Default
+    
+    if category in ["Earphones", "Hair dryer", "Headphones", "Mobile"]:
+        weights = CATEGORY_WEIGHTS.get("Electronics")
+    elif category in ["Hair oil", "Bracelet", "Fry pan", "Lifestyle", "Fashion"]:
+        weights = CATEGORY_WEIGHTS.get("Lifestyle")
+    elif category in CATEGORY_WEIGHTS:
+        weights = CATEGORY_WEIGHTS.get(category)
+
     final_score = (
-        FINAL_WEIGHTS["price"] * component_scores.get("price", 0.0) +
-        FINAL_WEIGHTS["specs"] * component_scores.get("specs", 0.0) +
-        FINAL_WEIGHTS["brand"] * component_scores.get("brand", 0.0) +
-        FINAL_WEIGHTS["reviews"] * component_scores.get("reviews", 0.0) +
-        FINAL_WEIGHTS["marketplace"] * component_scores.get("marketplace", 0.0)
+        weights["price"] * component_scores.get("price", 0.0) +
+        weights["specs"] * component_scores.get("specs", 0.0) +
+        weights["brand"] * component_scores.get("brand", 0.0) +
+        weights["reviews"] * component_scores.get("reviews", 0.0) +
+        weights["marketplace"] * component_scores.get("marketplace", 0.0)
     )
     return final_score
 

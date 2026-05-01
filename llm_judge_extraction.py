@@ -17,12 +17,12 @@ from typing import Dict, Any, Optional
 # SYSTEM PROMPT (KILLS CREATIVITY, ENFORCES DISCIPLINE)
 # ============================================================================
 
-SYSTEM_PROMPT = """You are a laptop specification extractor. Extract ONLY factual information.
+SYSTEM_PROMPT = """You are a product specification extractor. Categorize the product and extract ONLY factual information.
 
 Output ONLY valid JSON. No explanations. No markdown. Just the JSON object.
 
 Example output format:
-{"cpu_tier": "A", "gpu_tier": "B", "ram_gb": 16, "storage_gb": 512, "display_tier": "B", "brand_reliability": "High", "sentiment_distribution": {"positive": 0.7, "neutral": 0.2, "negative": 0.1}, "review_count": 3, "average_rating": 4.5}"""
+{"product_category": "Laptop", "cpu_tier": "A", "gpu_tier": "B", "ram_gb": 16, "storage_gb": 512, "display_tier": "B", "brand_reliability": "High", "sentiment_distribution": {"positive": 0.7, "neutral": 0.2, "negative": 0.1}, "review_count": 3, "average_rating": 4.5}"""
 
 
 # ============================================================================
@@ -31,17 +31,23 @@ Example output format:
 
 DEVELOPER_PROMPT = """Classification rules:
 
+Product Category: One of ["Laptop", "Electronics", "Lifestyle"]. 
+- Laptop: Portables, Macbooks, Gaming laptops.
+- Electronics: Earphones, Hair dryer, Mobile, Headphones.
+- Lifestyle: Hair oil, Bracelet, Fry pan, Fashion, Watches.
+
+For NON-LAPTOP products, set cpu_tier, gpu_tier, ram_gb, storage_gb, display_tier to null.
+
 CPU tiers: S (i9/Ryzen9), A (i7/Ryzen7), B (i5/Ryzen5), C (i3/Ryzen3), D (Celeron/old)
 GPU tiers: S (4090/4080), A (4070), B (4060/3060), C (old),  D (very old), Integrated (no GPU)
 Display: A (4K/OLED), B (1440p/144Hz), C (1080p/basic)
-Brand: High (Dell XPS/Apple/ThinkPad/ASUS ROG), Medium (HP/Acer/MSI), Low (generic)
+Brand: High (Apple/Dell XPS/Sony/Premium Brands), Medium (HP/Acer/Samsung), Low (generic)
 
 Sentiment from reviews: positive + neutral + negative = 1.0
 
 Output JSON with these exact keys:
-cpu_tier, gpu_tier, ram_gb, storage_gb, display_tier, brand_reliability, sentiment_distribution, review_count, average_rating
-
-Use null for missing data. Numbers must be actual numbers, not strings."""
+product_category, cpu_tier, gpu_tier, ram_gb, storage_gb, display_tier, brand_reliability, sentiment_distribution, review_count, average_rating
+"""
 
 
 # ============================================================================
@@ -133,10 +139,6 @@ Extract to JSON:"""
     
     # All retries failed - return conservative fallback
     print(f"[WARNING] LLM extraction failed after {max_retries} attempts")
-    print(f"Last error: {last_error}")
-    if last_output:
-        print(f"Last output: {last_output[:200]}")
-    
     return create_fallback_signals(product_description, customer_reviews)
 
 
@@ -199,8 +201,15 @@ def create_fallback_signals(description: str, reviews: str) -> Dict[str, Any]:
     desc_lower = description.lower()
     reviews_lower = reviews.lower()
     
+    # Detect category
+    category = "Laptop"
+    if any(x in desc_lower for x in ['oil', 'brace', 'fry', 'pan', 'fashion']):
+        category = "Lifestyle"
+    elif any(x in desc_lower for x in ['earphone', 'headphone', 'dryer', 'mobile']):
+        category = "Electronics"
+
     # Simple rule-based extraction
-    cpu_tier = "B"  # Default mid-range
+    cpu_tier = None if category != "Laptop" else "B"
     if any(x in desc_lower for x in ['i9', 'ryzen 9', '14900']):
         cpu_tier = "S"
     elif any(x in desc_lower for x in ['i7', 'ryzen 7']):
@@ -260,6 +269,7 @@ def create_fallback_signals(description: str, reviews: str) -> Dict[str, Any]:
     total = max(positive_count + negative_count + neutral_count, 1)
     
     return {
+        "product_category": category,
         "cpu_tier": cpu_tier,
         "gpu_tier": gpu_tier,
         "ram_gb": ram_gb,

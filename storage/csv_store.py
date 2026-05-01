@@ -2,8 +2,8 @@ import csv
 import os
 from typing import List, Dict, Any
 
-PRODUCTS_FILE = 'data/products.csv'
-HISTORY_FILE = 'data/negotiation_history.csv'
+PRODUCTS_FILE = 'data/.products.csv'
+HISTORY_FILE = 'data/.negotiation_history.csv'
 
 class CSVStore:
     def __init__(self):

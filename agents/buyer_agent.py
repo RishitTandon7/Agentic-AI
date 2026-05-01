@@ -138,7 +138,8 @@ class BuyerAgent:
             reasons_to_switch.append("superior value-for-money ratio")
         
         # DECISION: Switch if switch_score > threshold
-        should_switch = switch_score > 10  # Positive threshold for switching
+        # STUBBORNNESS: Ensure at least 3 rounds of dialogue
+        should_switch = switch_score > 30 and round_num >= 3 
         
         # GENERATE RESPONSE using AI (if available) or template
         if use_ai and self.model:

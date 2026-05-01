@@ -104,8 +104,9 @@ def evaluate_product(
     # LAYER 3: Aggregation
     # ========================================================================
     
-    print("[3/3] Aggregating final score...")
-    final_result = aggregate_final_score(component_scores)
+    category = signals.get("product_category", "Laptop")
+    print(f"[3/3] Aggregating final score (Category: {category})...")
+    final_result = aggregate_final_score(component_scores, category=category)
     print(f"[OK] Final score: {final_result['final_score']:.4f}")
     print(f"[OK] Purchase probability: {final_result['purchase_probability']:.2f}%")
     
@@ -124,7 +125,8 @@ def evaluate_product(
         output["breakdown"] = get_score_breakdown(
             signals=signals,
             component_scores=component_scores,
-            final_result=final_result
+            final_result=final_result,
+            category=category
         )
     
     return output
