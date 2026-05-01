@@ -17,20 +17,27 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 load_dotenv()
 
+BACKEND_ONLY = os.getenv('BACKEND_ONLY', 'false').lower() == 'true'
+
 @app.route('/')
 def home():
+    if BACKEND_ONLY:
+        return jsonify({"status": "ok", "mode": "backend-only", "message": "AURA API is running"})
     return send_file('index.html')
 
 @app.route('/search-page')
 def search_page():
-    """Simplified search interface with product limit control"""
+    if BACKEND_ONLY:
+        return jsonify({"status": "ok"}), 200
     return send_file('search.html')
 
 @app.route('/simple')
 def simple():
-    # simple_index.html no longer exists; redirect to main page
+    if BACKEND_ONLY:
+        return jsonify({"status": "ok"}), 200
     from flask import redirect
     return redirect('/')
+
 
 @app.route('/negotiate', methods=['POST'])
 def negotiate():
