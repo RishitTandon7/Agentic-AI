@@ -9,6 +9,24 @@ class JudgeAgent:
         self.km = KeyManager()
 
     def evaluate(self, product, user_query="", user_budget=0):
+        res = self._evaluate_internal(product, user_query, user_budget)
+        
+        # Enforce minimum score of 8.0 as requested
+        score = res.get('score', 0)
+        if score < 8.0:
+            res['score'] = 8.0
+            res['purchase_probability'] = 80.0
+            res['verdict'] = "GOOD"
+        
+        # Update verdict if score was adjusted
+        if res['score'] >= 8.5:
+            res['verdict'] = "EXCELLENT"
+        elif res['score'] >= 7.0 and res.get('verdict') not in ["EXCELLENT", "GOOD"]:
+            res['verdict'] = "GOOD"
+            
+        return res
+
+    def _evaluate_internal(self, product, user_query="", user_budget=0):
         """
         Evaluates product using Deterministic Pipeline -> Fallback to Generic Local Llama -> Fallback Gemini
         """

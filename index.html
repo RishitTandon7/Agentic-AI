@@ -240,17 +240,7 @@
                         </button>
                     </div>
 
-                    <!-- CATEGORY CHIPS -->
-                    <div class="flex flex-wrap items-center gap-2 px-4 py-4 mt-1 border-b border-white/5">
-                        <div class="text-[10px] text-gray-500 font-mono uppercase tracking-widest mr-2">Category:</div>
 
-                        <div class="cat-chip active" onclick="setCategory(this, 'Laptop')">Laptop</div>
-                        <div class="cat-chip" onclick="setCategory(this, 'Earphones')">Earphones</div>
-                        <div class="cat-chip" onclick="setCategory(this, 'Hair dryer')">Hair dryer</div>
-                        <div class="cat-chip" onclick="setCategory(this, 'Fry pan')">Fry pan</div>
-                        <div class="cat-chip" onclick="setCategory(this, 'Hair oil')">Hair oil</div>
-                        <div class="cat-chip" onclick="setCategory(this, 'Bracelet')">Bracelet</div>
-                    </div>
 
                     <!-- SOURCE TOGGLES -->
                     <div class="flex flex-wrap items-center gap-3 px-4 py-4 mt-1">
@@ -508,20 +498,7 @@
     <script>
         // --- SOURCE TOGGLE LOGIC ---
         const activeSources = new Set(['amazon', 'flipkart']);
-        let currentCategory = 'Laptop';
 
-        function setCategory(el, cat) {
-            document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
-            currentCategory = cat;
-
-            // Helpful pre-fills
-            const queryInput = document.getElementById('query');
-            if (queryInput.value === '' || queryInput.dataset.prefetched === 'true') {
-                queryInput.value = cat;
-                queryInput.dataset.prefetched = 'true';
-            }
-        }
 
         function toggleSource(source) {
             const el = document.getElementById('src-' + source);
