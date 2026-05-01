@@ -522,28 +522,28 @@ class SerpApiScraper(ScraperProvider):
 
 def get_scraper():
     from dotenv import load_dotenv
-    load_dotenv()  # Load .env file
-    
-    # Try DirectSearchScraper first (BEST - no API limits!)
+    load_dotenv()
+
+    # 1. SerpAPI — PRIMARY (fastest: pre-structured data, ~0.5s, no Playwright needed)
+    serpapi_key = os.getenv("SERPAPI_KEY")
+    if serpapi_key:
+        print("✅ Using SerpApiScraper (primary - fastest)")
+        return SerpApiScraper(serpapi_key)
+
+    # 2. DirectSearchScraper — fallback (Playwright-based, slower but no API limits)
     try:
         from scraper.direct_scraper import DirectSearchScraper
-        print("✅ Using DirectSearchScraper (Amazon/Flipkart direct)")
+        print("✅ Using DirectSearchScraper (fallback - Playwright)")
         return DirectSearchScraper()
     except ImportError:
         pass
-    
-    # Fallback to SerpApi
-    serpapi_key = os.getenv("SERPAPI_KEY")
-    if serpapi_key:
-        print("✅ Using SerpApiScraper")
-        return SerpApiScraper(serpapi_key)
 
-    # Fallback to Google CSE
-    api_key = os.getenv("GOOGLE_API_KEY")
+    # 3. Google CSE — last resort
+    api_key = os.getenv("GOOGLE_API_KEY_1") or os.getenv("GOOGLE_API_KEY")
     cx = os.getenv("GOOGLE_CX") or os.getenv("SEARCH_ENGINE_ID")
     if api_key and cx:
-        print(f"✅ Using ProgrammableSearchEngineScraper with {len(api_key)} char API key")
+        print(f"✅ Using ProgrammableSearchEngineScraper (last resort)")
         return ProgrammableSearchEngineScraper(api_key, cx)
-    else:
-        print("❌ Missing API keys. Using simulation.")
-        return SimulationScraper()
+
+    print("❌ No scraper available. Using simulation.")
+    return SimulationScraper()
