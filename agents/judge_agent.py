@@ -1,6 +1,7 @@
 import google.generativeai as genai
 import json
 import re
+import os
 import ollama
 from key_manager import KeyManager
 
@@ -103,7 +104,10 @@ class JudgeAgent:
         """
 
         try:
-            response = ollama.chat(model='llama3.2', messages=[
+            # Support remote Ollama via OLLAMA_HOST (e.g. Ngrok tunnel)
+            ollama_host = os.getenv('OLLAMA_HOST', 'http://localhost:11434')
+            client = ollama.Client(host=ollama_host)
+            response = client.chat(model='llama3.2', messages=[
                 {'role': 'user', 'content': prompt}
             ], format='json')
             
