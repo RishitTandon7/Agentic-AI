@@ -600,19 +600,19 @@ def get_scraper():
     from dotenv import load_dotenv
     load_dotenv()
 
-    # 1. SerpAPI — PRIMARY (fastest: pre-structured data, ~0.5s, no Playwright needed)
-    serpapi_key = os.getenv("SERPAPI_KEY")
-    if serpapi_key:
-        print("✅ Using SerpApiScraper (primary - fastest)")
-        return SerpApiScraper(serpapi_key)
-
-    # 2. DirectSearchScraper — fallback (Playwright-based, slower but no API limits)
+    # 1. DirectSearchScraper — PRIMARY (Playwright scrapes Amazon/Flipkart directly, more results)
     try:
         from scraper.direct_scraper import DirectSearchScraper
-        print("✅ Using DirectSearchScraper (fallback - Playwright)")
+        print("✅ Using DirectSearchScraper (primary - Playwright)")
         return DirectSearchScraper()
     except ImportError:
         pass
+
+    # 2. SerpAPI — fallback (fast but returns fewer filtered results)
+    serpapi_key = os.getenv("SERPAPI_KEY")
+    if serpapi_key:
+        print("✅ Using SerpApiScraper (fallback)")
+        return SerpApiScraper(serpapi_key)
 
     # 3. Google CSE — last resort
     api_key = os.getenv("GOOGLE_API_KEY_1") or os.getenv("GOOGLE_API_KEY")
