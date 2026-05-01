@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, send_file, Response
+from flask_cors import CORS
 from controller import NegotiationController
 from dotenv import load_dotenv
 import os
@@ -13,6 +14,7 @@ except AttributeError:
     pass  # Not available in all environments
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 load_dotenv()
 
 @app.route('/')
