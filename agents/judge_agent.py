@@ -106,6 +106,11 @@ class JudgeAgent:
         try:
             # Support remote Ollama via OLLAMA_HOST (e.g. Ngrok tunnel)
             ollama_host = os.getenv('OLLAMA_HOST', 'http://localhost:11434')
+            
+            # Quick reachability check with 3s timeout — avoids 30s hang on cloud
+            import requests as _req
+            _req.get(f"{ollama_host}/api/tags", timeout=3)
+            
             client = ollama.Client(host=ollama_host)
             response = client.chat(model='llama3.2', messages=[
                 {'role': 'user', 'content': prompt}
