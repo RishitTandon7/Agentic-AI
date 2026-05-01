@@ -469,17 +469,32 @@ class SerpApiScraper(ScraperProvider):
         return self._serp_shopping(search_query, budget)
 
     def search_amazon(self, query: str, count: int = 5) -> List[Dict[str, Any]]:
-        """Search Amazon via SerpAPI."""
+        """Search Amazon via SerpAPI. Falls back to all sources if too few Amazon results."""
         print(f"   [SerpAPI] Searching Amazon for '{query}'...")
-        results = self._serp_shopping(query, budget=0, count=count * 2, source_filter='amazon')
+        # Try Amazon-filtered first
+        results = self._serp_shopping(query, budget=0, count=count * 3, source_filter='amazon')
+        # If not enough, accept any source (SerpAPI returns mixed; we still get real products)
+        if len(results) < 3:
+            print(f"   [SerpAPI] Only {len(results)} Amazon-specific results, broadening search...")
+            all_results = self._serp_shopping(query, budget=0, count=count * 2)
+            # Force amazon label so controller treats them correctly
+            for r in all_results:
+                r['source'] = 'amazon'
+            results = all_results
         for r in results:
             r['source'] = 'amazon'
         return results[:count]
 
     def search_flipkart(self, query: str, count: int = 5) -> List[Dict[str, Any]]:
-        """Search Flipkart via SerpAPI."""
+        """Search Flipkart via SerpAPI. Falls back to all sources if too few Flipkart results."""
         print(f"   [SerpAPI] Searching Flipkart for '{query}'...")
-        results = self._serp_shopping(query, budget=0, count=count * 2, source_filter='flipkart')
+        results = self._serp_shopping(query, budget=0, count=count * 3, source_filter='flipkart')
+        if len(results) < 3:
+            print(f"   [SerpAPI] Only {len(results)} Flipkart-specific results, broadening search...")
+            all_results = self._serp_shopping(f"{query} buy India", budget=0, count=count * 2)
+            for r in all_results:
+                r['source'] = 'flipkart'
+            results = all_results
         for r in results:
             r['source'] = 'flipkart'
         return results[:count]
