@@ -58,14 +58,26 @@ def extract_signals(
     product_description: str,
     customer_reviews: str,
     model: str = "llama3.2",
-    ollama_url: str = "http://localhost:11434/api/generate",
+    ollama_url: str = None,
     max_retries: int = 3
 ) -> Dict[str, Any]:
     """
     Extract structured signals from raw product data using LLM.
-    
-    Improved version with better prompts and error handling.
+    Uses OLLAMA_HOST env var. Falls back to rule-based signals if Ollama is unreachable.
     """
+    import os
+    # Resolve Ollama URL: param > env > localhost
+    if ollama_url is None:
+        ollama_host = os.getenv('OLLAMA_HOST', 'http://localhost:11434')
+        ollama_url = f"{ollama_host.rstrip('/')}/api/generate"
+
+    # Quick reachability check — skip all retries if Ollama is down
+    try:
+        ping_url = ollama_url.replace('/api/generate', '/api/tags')
+        requests.get(ping_url, timeout=2)
+    except Exception:
+        print(f"[WARNING] Ollama unreachable at {ollama_url} — using rule-based fallback")
+        return create_fallback_signals(product_description, customer_reviews)
     
     # Simplified user prompt
     user_prompt = f"""Product: {product_description}
