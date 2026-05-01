@@ -30,12 +30,12 @@ class ModelWarmer:
             self._is_checking = True
         try:
             rotator = ModelRotator()
-            model_id, model = rotator.get_best_model(task="negotiation")
+            model_id, key, model = rotator.get_best_model(task="negotiation")
             model.generate_content("Say OK.")
             self._ready = True
-            print(f"✅ Warmer: Best model ready → {model_id}")
+            print(f"Warmer: Best model ready -> {model_id}")
         except Exception as e:
-            print(f"⚠️  Warmer: ping failed ({e}) — rotator will handle on demand")
+            print(f"Warmer: ping failed ({e}) - rotator will handle on demand")
         finally:
             self._is_checking = False
 

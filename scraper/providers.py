@@ -456,68 +456,112 @@ class ProgrammableSearchEngineScraper(ScraperProvider):
 class SerpApiScraper(ScraperProvider):
     def __init__(self, api_key: str):
         self.api_key = api_key
-        
+
     def search(self, query: str, budget: float, sources: List[str]) -> List[Dict[str, Any]]:
+        """Generic search across sources."""
         print(f"Scraping using SerpApi for '{query}'...")
-        
         site_filter = ""
         if sources and 'web' not in sources:
-            site_filter = " OR ".join([f"site:{s}.com" for s in sources] + [f"site:{s}.in" for s in sources])
-            
-        search_query = query
-        if site_filter:
-            search_query += f" ({site_filter})"
-            
+            site_filter = " OR ".join(
+                [f"site:{s}.com" for s in sources] + [f"site:{s}.in" for s in sources]
+            )
+        search_query = query + (f" ({site_filter})" if site_filter else "")
+        return self._serp_shopping(search_query, budget)
+
+    def search_amazon(self, query: str, count: int = 5) -> List[Dict[str, Any]]:
+        """Search Amazon via SerpAPI Google Shopping."""
+        print(f"   [SerpAPI] Searching Amazon for '{query}'...")
+        results = self._serp_shopping(f"{query} site:amazon.in", budget=0, count=count)
+        for r in results:
+            r['source'] = 'amazon'
+        return results
+
+    def search_flipkart(self, query: str, count: int = 5) -> List[Dict[str, Any]]:
+        """Search Flipkart via SerpAPI Google Shopping."""
+        print(f"   [SerpAPI] Searching Flipkart for '{query}'...")
+        results = self._serp_shopping(f"{query} site:flipkart.com", budget=0, count=count)
+        for r in results:
+            r['source'] = 'flipkart'
+        return results
+
+    def search_google_shopping(self, query: str, count: int = 5) -> List[Dict[str, Any]]:
+        """Google Shopping search (no site filter)."""
+        return self._serp_shopping(query, budget=0, count=count)
+
+    def search_google_shopping_amazon(self, query: str, count: int = 5) -> List[Dict[str, Any]]:
+        """Amazon results via Google Shopping."""
+        return self.search_amazon(query, count)
+
+    def search_myntra(self, query: str, count: int = 5) -> List[Dict[str, Any]]:
+        results = self._serp_shopping(f"{query} site:myntra.com", budget=0, count=count)
+        for r in results: r['source'] = 'myntra'
+        return results
+
+    def search_ajio(self, query: str, count: int = 5) -> List[Dict[str, Any]]:
+        results = self._serp_shopping(f"{query} site:ajio.com", budget=0, count=count)
+        for r in results: r['source'] = 'ajio'
+        return results
+
+    def search_shein(self, query: str, count: int = 5) -> List[Dict[str, Any]]:
+        results = self._serp_shopping(f"{query} site:shein.com", budget=0, count=count)
+        for r in results: r['source'] = 'shein'
+        return results
+
+    def _serp_shopping(self, query: str, budget: float = 0, count: int = 5) -> List[Dict[str, Any]]:
+        """Core SerpAPI call — Google Shopping results."""
         params = {
-            "engine": "google",
-            "q": search_query,
+            "engine": "google_shopping",
+            "q": query,
             "api_key": self.api_key,
             "gl": "in",
             "hl": "en",
-            "tbm": "shop"
+            "num": count,
         }
-        
         try:
-            response = requests.get("https://serpapi.com/search", params=params)
+            response = requests.get("https://serpapi.com/search", params=params, timeout=10)
             response.raise_for_status()
             data = response.json()
-            
+
             shopping_results = data.get("shopping_results", [])
-            
             items = []
-            if shopping_results:
-                for item in shopping_results:
-                    title = item.get("title", "")
-                    link = item.get("link", "")
-                    price_str = item.get("extracted_price", 0)
-                    if not price_str:
-                        price_str = str(item.get("price", "0")).replace('₹', '').replace(',', '')
-                    try:
-                        price = float(price_str)
-                    except:
-                        price = 0.0
-                    source_str = item.get("source", "web").lower()
-                    if 'amazon' in source_str or 'amazon' in link.lower(): source_name = 'amazon'
-                    elif 'flipkart' in source_str or 'flipkart' in link.lower(): source_name = 'flipkart'
-                    else: source_name = 'web'
-                    
-                    if budget > 0 and (price > budget * 1.5 or price < budget * 0.05):
-                        continue
-                        
-                    items.append({
-                        'name': title,
-                        'price': price,
-                        'rating': item.get("rating", round(random.uniform(3.5, 5.0), 1)),
-                        'reviews': item.get("reviews", random.randint(50, 5000)),
-                        'source': source_name,
-                        'url': link,
-                        'timestamp': 'now',
-                    })
-                return items[:5]
-            return []
-                
+            for item in shopping_results:
+                try:
+                    price = float(item.get("extracted_price", 0) or
+                                  str(item.get("price", "0")).replace('₹', '').replace(',', ''))
+                except:
+                    price = 0.0
+
+                if price == 0.0:
+                    continue
+                if budget > 0 and (price > budget * 1.5 or price < budget * 0.05):
+                    continue
+
+                link = item.get("link", "")
+                source_str = item.get("source", "").lower()
+                if 'amazon' in source_str or 'amazon' in link.lower():
+                    source_name = 'amazon'
+                elif 'flipkart' in source_str or 'flipkart' in link.lower():
+                    source_name = 'flipkart'
+                elif 'myntra' in source_str or 'myntra' in link.lower():
+                    source_name = 'myntra'
+                else:
+                    source_name = source_str or 'web'
+
+                items.append({
+                    'name': item.get("title", "Unknown Product"),
+                    'price': price,
+                    'rating': float(item.get("rating", 0) or random.uniform(3.5, 4.8)),
+                    'reviews': int(item.get("reviews", 0) or random.randint(50, 5000)),
+                    'source': source_name,
+                    'url': link or f"https://www.google.com/search?q={query}",
+                    'timestamp': 'now',
+                })
+
+            print(f"   [SerpAPI] {len(items)} results for '{query[:40]}'")
+            return items[:count]
+
         except Exception as e:
-            print(f"SerpApi Error: {e}")
+            print(f"[SerpAPI] Error: {e}")
             return []
 
 def get_scraper():
